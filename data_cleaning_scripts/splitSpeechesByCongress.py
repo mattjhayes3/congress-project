@@ -59,7 +59,7 @@ def shouldExcludeText(speech_text):
 # selected_congresses = ['097', '098', '099', '100', '101', '102', '103', '104', '105', '106', '114', '113', '112', '111', '110', '109', '108', '107']
 # selected_congresses = ['100', '106', '114', '112', '109']
 # selected_congresses = ['103']
-selected_congresses = range(43, 97)
+selected_congresses = range(97, 115) #range(43, 97)
 
 for selected_congress in selected_congresses:
     root = "../../congress_data/hein-daily/" if selected_congress >= 97 else "../../congress_data/hein-bound/"

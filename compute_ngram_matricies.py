@@ -68,7 +68,7 @@ for style in ['max_balanced_0']:  # 'bayram'
                         stats[token] = {
                             'total': absolute_counts[token], 'distinct': number_of_speeches[token]}
                     # rev_dict = {v:k for k,v in dictionary.items()}
-                    with open(f"matricies2/stats/{chamber}_{fmt_congress}_{n}gram_{out_style}_counts.json", "w") as dict_file:
+                    with open(f"matricies/stats/{chamber}_{fmt_congress}_{n}gram_{out_style}_counts.json", "w") as dict_file:
                         json.dump(stats, dict_file)
                 row_files += paths
             result = np.zeros((len(row_files), len(dictionary)))
@@ -89,9 +89,9 @@ for style in ['max_balanced_0']:  # 'bayram'
                         result[i, dictionary[token]] += 1
             # np.savetxt(
             sparse.save_npz(
-                f"matricies2/{chamber}_{fmt_congress}_{n}gram_{out_style}_matrix.txt", sparse.csr_matrix(result))
+                f"matricies/{chamber}_{fmt_congress}_{n}gram_{out_style}_matrix.txt", sparse.csr_matrix(result))
             # sparse.save_npz(f"matricies/{fmt_congress}_matrix.txt", sparse.csr_matrix(result))
-            with open(f"matricies2/{chamber}_{fmt_congress}_{n}gram_{out_style}_row_files.txt", 'w') as f:
+            with open(f"matricies/{chamber}_{fmt_congress}_{n}gram_{out_style}_row_files.txt", 'w') as f:
                 # with open(f"matricies/{fmt_congress}_row_files.txt", 'w') as f:
                 for path in row_files:
                     f.write("%s" % path)
