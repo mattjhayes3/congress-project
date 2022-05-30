@@ -41,7 +41,10 @@ class Model:
 			return to_json()
 		get_params = getattr(self.model, "get_params", None)
 		if callable(get_params):
-			return json.dumps(get_params())
+			try:
+				return json.dumps(get_params())
+			except TypeError:
+				print(f"Json TypeError save failed for {self.name()}")
 		raise Exception(f"Don't know how to save for {self.name()}")
 		
 	def is_h5(self):

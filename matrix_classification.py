@@ -28,6 +28,7 @@ from models.lstm_drop import LSTMDropModel
 from models.lstm_word2vec import LSTMWord2VecModel
 from models.lstm_drop_glove import LSTMDropGloveModel
 from models.cnn import CNNModel
+from models.cnn2 import CNN2Model
 from models.boost import BoostModel
 from models.knn import KNNModel
 from models.rf import RFModel
@@ -82,7 +83,7 @@ feature_type = 'unigram'
 #     return feature_matrix
 
 
-def run(save_dir, m, style, congress, chamber):
+def run(save_dir, m, style, style_w_count, congress, chamber):
     style_wo_gram = style.replace('2gram_', '').replace('3gram_', '')
     # split_name = f"{congress}_{style.replace('2gram_', '')}"
     # 3) read the training, validation, and test set document lists
@@ -104,8 +105,8 @@ def run(save_dir, m, style, congress, chamber):
     #         print(f"found the file 3")
 
     ccs = f"{chamber}_{congress}_{style}"
-    ccss = f"{ccs}_1_1" # 
-    styles = f"{style}_1_1" # 
+    ccss = f"{chamber}_{congress}_{style_w_count}"
+    styles = f"{style_w_count}" # _1_1 
     # read the complete feature matrices
     print(f"loading matrix... ")
     if m.is_sequence():
@@ -179,11 +180,11 @@ def run(save_dir, m, style, congress, chamber):
 
     os.makedirs(save_dir + 'models/', exist_ok=True)
     print(f"fitting...")
-    # grid = m.getClassifierParams(training_matrix, training_labels, validation_matrix, validation_labels, dictionary)
-    # if grid is not None:
-    #     df = pd.DataFrame.from_dict(grid.cv_results_)
-    #     df.sort_values('rank_test_score')
-    #     df.to_csv(f'{save_dir}models/{chamber}{congress}_{style}_cv_results.csv')
+    grid = m.getClassifierParams(training_matrix, training_labels, validation_matrix, validation_labels, dictionary)
+    if grid is not None:
+        df = pd.DataFrame.from_dict(grid.cv_results_)
+        df.sort_values('rank_test_score')
+        df.to_csv(f'{save_dir}models/{chamber}{congress}_{style}_cv_results.csv')
     m.fit(training_matrix, training_labels,
           validation_matrix, validation_labels, dictionary)
     if not m.is_baseline():
@@ -219,6 +220,7 @@ def run(save_dir, m, style, congress, chamber):
     ), congress, chamber, styles, "test", test_classification_results_prob, test_labels)
     print(f"test accuracy {test_stats['accuracy']}")
 
+# i stand in opposition to the republican affordable care repeal act because it is an irresponsible approach that does nothing to address the rising cost of health care that our families and our businesses are facing today * it is a fact that the __oov__ cost for most unitedstates companies is health care * without the affordable care act overall health care costs will continue to rise even faster costs that will be borne by both the public and private sector * it is important to note that voting for this repeal bill will eliminate the small business health care tax credit * this tax credit currently allows small businesses to offset up to 35 percent of their health care insurance cost * starting in 2014 the credit will increase to 50 percent of premium co
 
 if __name__ == "__main__":
     np.random.seed(0)
@@ -240,14 +242,17 @@ if __name__ == "__main__":
     #             ]:  LogisticModel(), NN20DModel(), NN20NDModel(), NN1000DModel(), NN1000NDModel(), MNNBModel(), KNNModel(),LDAModel(), RFCVModel(), BoostModel(), SVMModel() 
     # for m in [ RFCVModel(), BoostModel(), SVMModel()]: # LogisticModel(), NN20DModel(), NN20NDModel(), NN1000DModel(), NN1000NDModel(), MNNBModel(), KNNModel(), LDAModel(),
     ### for m in [LSTMDropModel(), LSTMDropBiDiModel(), LSTMBiDiModel(), NNMultiModel()]:
-    for m in [CNNModel()]: #   LDAModel() LSTMDropModel(), LSTMDropBiDiModel(), , NNMultiModel() LSTMDropGloveModel(50), LSTMDropGloveModel(100)
-    # , LSTMModel(), LogisticModel(), NN20DModel(), NN20NDModel(), NN1000DModel(), NN1000NDModel(), SVMModel(), MNNBModel(), KNNModel(), LDAModel(), RFCVModel(), BoostModel()]:  
-    # for m in [LogisticModel('tfidf'), NN20DModel('tfidf'), NN20NDModel('tfidf'), NN1000DModel('tfidf'), NN1000NDModel('tfidf'), SVMModel('tfidf'), MNNBModel('tfidf'), KNNModel('tfidf'), LDAModel('tfidf'), RFCVModel('tfidf'), BoostModel('tfidf')]:  
+    for m in [CNN2Model(), LSTMDropBiDiModel()]: 
+    # for m in [BoostModel()]: 
+        #   LDAModel() LSTMDropModel(), LSTMDropBiDiModel(), , NNMultiModel() LSTMDropGloveModel(50), LSTMDropGloveModel(100)
+         # , LSTMModel(), LogisticModel(), NN20DModel(), NN20NDModel(), NN1000DModel(), NN1000NDModel(), SVMModel(), MNNBModel(), KNNModel(), LDAModel(), RFCVModel(), BoostModel()]:  
+        # for m in [LogisticModel('tfidf'), NN20DModel('tfidf'), NN20NDModel('tfidf'), NN1000DModel('tfidf'), NN1000NDModel('tfidf'), SVMModel('tfidf'), MNNBModel('tfidf'), KNNModel('tfidf'), LDAModel('tfidf'), RFCVModel('tfidf'), BoostModel('tfidf')]:  
         save_dir = "models/" + m.getSaveDirectory()
         for subdir in ["", "models/", "Training/", "Validation/", "Test/"]:
             os.makedirs(save_dir + subdir, exist_ok=True)
         # for i_split in [ '100', '103', '106', '109', '112', '114']:  '097',
-        for style in ['bayram']: #
+        for style, style_w_count in [('max_balanced_0', 'max_balanced_0_3_7'), ('max_balanced_0', 'max_balanced_0_10_50')]: #
+        # for style, style_w_count in [('bayram', 'bayram')]: #
         # for style in ['3gram_max_balanced_0', '2gram_max_balanced_0']: # '097',
             for chamber in ['House']:
                 for congress in ['097', '100',  '103', '106', '109', '112', '114']:
@@ -256,8 +261,8 @@ if __name__ == "__main__":
                     print(f"*** Running for {m.name()}, {congress} ***")
                     if not m.use_gpu():
                         with tf.device("/cpu:0"):
-                            run(save_dir, m, style, congress, chamber)
+                            run(save_dir, m, style, style_w_count, congress, chamber)
                     else:
-                        run(save_dir, m, style, congress, chamber)
+                        run(save_dir, m, style, style_w_count, congress, chamber)
 
         # print(( * df[df['split']=='test'])['dataset', 'accuracy'])

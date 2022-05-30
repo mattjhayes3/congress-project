@@ -10,7 +10,8 @@ if __name__ == "__main__":
     seed = 0
     style = "max_balanced"
     random.seed(seed)
-    processed_dir = '../../processed_data/'
+    processed_dir_no_dots = 'processed_data/'
+    processed_dir = f'../../{processed_dir_no_dots}'
     bayram_congresses = [97, 100, 103, 106, 109, 112, 114]
     # selected_congresses = [97, 100, 103, 106, 109, 112, 114]#range(43, 115)
     selected_congresses = range(97, 115)  # [100]
@@ -27,7 +28,7 @@ if __name__ == "__main__":
             files_rep = set(getBasenames(glob.glob(f'{processed_dir}{chamber}{fmt_congress}_unigrams/r_*.txt')))
 
             current_files = files_dem.union(files_rep)
-            basename_to_current = {os.path.basename(f):f for f in current_files}
+            # basename_to_current = {os.path.basename(f):f for f in current_files}
             existing_test = []
             existing_train = []
             existing_valid = []
@@ -47,22 +48,26 @@ if __name__ == "__main__":
                 assert len(existing_valid) > 0
                 print(f"found {len(existing_valid)} exisitng valid cases")
 
+                existing_test = [f"{processed_dir_no_dots}{chamber}{fmt_congress}_unigrams/{t}" for t in existing_test]
+                existing_train = [f"{processed_dir_no_dots}{chamber}{fmt_congress}_unigrams/{t}" for t in existing_train]
+                existing_valid = [f"{processed_dir_no_dots}{chamber}{fmt_congress}_unigrams/{t}" for t in existing_valid]
+
                 for existing in [existing_train, existing_valid, existing_test]:
-                    for t in existing:
-                        assert t in basename_to_current, t
-                        current = basename_to_current[t]
+                    for current in existing:
+                        assert current in current_files, f"{current}"
                         current_files.remove(current)
                         assert current not in current_files
-                        if t.startswith("d_"):
+                        basename = os.path.basename(current)
+                        if basename.startswith("d_"):
                             assert current in files_dem
                             files_dem.remove(current)
                             assert current not in files_dem
-                        elif t.startswith("r_"):
+                        elif basename.startswith("r_"):
                             assert current in files_rep
                             files_rep.remove(current)
                             assert current not in files_rep
                         else:
-                            raise Exception(f"Unexpected path: '{t}'")
+                            raise Exception(f"Unexpected path: '{current}'")
             print(f"len allfiles={len(current_files)}, len demfiles={len(files_dem)}, len repfiles={len(files_rep)},")
             current_files = list(current_files)
             current_files.sort()
