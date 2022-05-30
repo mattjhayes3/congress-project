@@ -101,7 +101,7 @@ processed_dir = '../../processed_data/'
 # selected_congresses = range(43, 97)
 for chamber in [ "Senate", "House"]: #
     # for i in selected_congresses:
-    for i in [100]:
+    for i in range(97, 115):
         # if chamber== "House" and i in [97, 100, 103, 106, 109, 112, 114]:
         #     continue
         fmt_congress = "%03d" % i
