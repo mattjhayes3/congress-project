@@ -252,6 +252,7 @@ if __name__ == "__main__":
             os.makedirs(save_dir + subdir, exist_ok=True)
         # for i_split in [ '100', '103', '106', '109', '112', '114']:  '097',
         for style, style_w_count in [('max_balanced_0', 'max_balanced_0_1_1')]: #
+        # for style, style_w_count in [('max_balanced_0', 'max_balanced_0_3_7'), ('max_balanced_0', 'max_balanced_0_10_50')]: #
         # for style, style_w_count in [('bayram', 'bayram')]: #
         # for style in ['3gram_max_balanced_0', '2gram_max_balanced_0']: # '097',
             for chamber in ['House']:

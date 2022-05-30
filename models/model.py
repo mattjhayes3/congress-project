@@ -45,6 +45,7 @@ class Model:
 				return json.dumps(get_params())
 			except TypeError:
 				print(f"Json TypeError save failed for {self.name()}")
+				return ""
 		raise Exception(f"Don't know how to save for {self.name()}")
 		
 	def is_h5(self):
