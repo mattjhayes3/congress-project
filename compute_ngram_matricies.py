@@ -73,6 +73,7 @@ for style in ['max_balanced_0']:  # 'bayram'
                 row_files += paths
             result = sparse.lil_matrix((len(row_files), len(dictionary)), dtype=np.float64)
             for (i, path) in enumerate(row_files):
+                newrow = np.zeros((result.shape[1]))
                 path = path.replace('\n', '')
                 with open(f"../processed_data/{chamber}{fmt_congress}_sentences/{path}") as f:
                     lines = f.readlines()
@@ -86,7 +87,8 @@ for style in ['max_balanced_0']:  # 'bayram'
                             tokens.append(" ".join(words[start:start+n]))
                 for token in tokens:
                     if token in dictionary:
-                        result[i, dictionary[token]] += 1
+                        newrow[dictionary[token]] += 1
+                result[i, :] = newrow
             # np.savetxt(
             sparse.save_npz(
                 f"matricies/{chamber}_{fmt_congress}_{n}gram_{out_style}_matrix.txt", sparse.csr_matrix(result))
