@@ -71,7 +71,7 @@ for style in ['max_balanced_0']:  # 'bayram'
                     with open(f"matricies/stats/{chamber}_{fmt_congress}_{n}gram_{out_style}_counts.json", "w") as dict_file:
                         json.dump(stats, dict_file)
                 row_files += paths
-            result = sparse.csr_matrix((len(row_files), len(dictionary)), dtype=np.float64)
+            result = sparse.lil_matrix((len(row_files), len(dictionary)), dtype=np.float64)
             for (i, path) in enumerate(row_files):
                 path = path.replace('\n', '')
                 with open(f"../processed_data/{chamber}{fmt_congress}_sentences/{path}") as f:
@@ -89,7 +89,7 @@ for style in ['max_balanced_0']:  # 'bayram'
                         result[i, dictionary[token]] += 1
             # np.savetxt(
             sparse.save_npz(
-                f"matricies/{chamber}_{fmt_congress}_{n}gram_{out_style}_matrix.txt", result)
+                f"matricies/{chamber}_{fmt_congress}_{n}gram_{out_style}_matrix.txt", sparse.csr_matrix(result))
             # sparse.save_npz(f"matricies/{fmt_congress}_matrix.txt", sparse.csr_matrix(result))
             with open(f"matricies/{chamber}_{fmt_congress}_{n}gram_{out_style}_row_files.txt", 'w') as f:
                 # with open(f"matricies/{fmt_congress}_row_files.txt", 'w') as f:
