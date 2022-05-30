@@ -64,6 +64,7 @@ class TokenAndPositionEmbedding(layers.Layer):
             'vocab_size': self.vocab_size,
             'embed_dim': self.embed_dim,
         })
+        return config
 
 class TransformerModel(SequenceModel):
     def __init__(self, instance_name=None):
