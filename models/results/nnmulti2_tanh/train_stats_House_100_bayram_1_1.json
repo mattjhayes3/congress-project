@@ -1,0 +1,1 @@
+{"model": "nnmulti2_tanh", "dataset": "h100_bayram_1_1", "congress": "100", "chamber": "House", "bayram_1_1": "style", "split": "train", "n": 4000, "TP": 2000, "FP": 0, "TN": 2000, "FN": 0, "precision": 1.0, "recall": 1.0, "accuracy": 1.0, "f1": 1.0, "negative_accuracy": 1.0, "balanced_accuracy": 1.0, "AUC": 1.0, "CI_95.0": [NaN, NaN]}

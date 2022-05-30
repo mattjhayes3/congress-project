@@ -1,0 +1,1 @@
+{"model": "models.lda", "dataset": "h097", "split": "train", "n": 4000, "TP": 1988, "FP": 11, "TN": 1989, "FN": 12, "precision": 0.9944972486243121, "recall": 0.994, "accuracy": 0.99425, "f1": 0.9942485621405351, "negative_accuracy": 0.9945, "balanced_accuracy": 0.9942500000000001, "AUC": 0.99425, "CI_95.0": [0.9919062782823821, 0.9965937217176178]}

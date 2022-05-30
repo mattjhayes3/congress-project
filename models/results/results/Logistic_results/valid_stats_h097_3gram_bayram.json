@@ -1,0 +1,1 @@
+{"model": "logistic", "dataset": "h097_3gram_bayram", "split": "valid", "n": 1000, "TP": 300, "FP": 151, "TN": 349, "FN": 200, "precision": 0.6651884700665188, "recall": 0.6, "accuracy": 0.649, "f1": 0.6309148264984227, "negative_accuracy": 0.698, "balanced_accuracy": 0.649, "AUC": 0.69378, "CI_95.0": [0.6614558651313925, 0.7261041348686074]}

@@ -1,0 +1,1 @@
+{"model": "models.nn20d", "dataset": "h114", "split": "train", "n": 4000, "TP": 1734, "FP": 162, "TN": 1838, "FN": 266, "precision": 0.9145569620253164, "recall": 0.867, "accuracy": 0.893, "f1": 0.8901437371663244, "negative_accuracy": 0.919, "balanced_accuracy": 0.893, "AUC": 0.9599179999999999, "CI_95.0": [0.9544112168634717, 0.9654247831365281]}

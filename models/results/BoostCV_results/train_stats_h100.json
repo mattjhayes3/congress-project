@@ -1,0 +1,1 @@
+{"model": "models.boost", "dataset": "h100", "split": "train", "n": 4000, "TP": 1445, "FP": 553, "TN": 1447, "FN": 555, "precision": 0.7232232232232232, "recall": 0.7225, "accuracy": 0.723, "f1": 0.7228614307153578, "negative_accuracy": 0.7235, "balanced_accuracy": 0.7230000000000001, "AUC": 0.723, "CI_95.0": [0.7091281156879891, 0.7368718843120109]}

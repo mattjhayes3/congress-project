@@ -1,0 +1,2 @@
+TP	TN	FP	FN	precision	recall	accuracy	F1	AUC	DeLongCI
+0	500	0	500	nan	0.0	0.5	nan	0.4999999999999999	nan-nan

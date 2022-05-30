@@ -1,4 +1,6 @@
 matricies/**
 matricies2/**
 *.pdf
-models/results/**
+models/results/*/models/**
+models/results/results/*/models/*
+models/results/results/nn20nd/models/unigram_trained_model_House_*

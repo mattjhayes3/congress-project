@@ -1,0 +1,1 @@
+{"model": "models.knn", "dataset": "h100", "split": "test", "n": 1000, "TP": 221, "FP": 109, "TN": 391, "FN": 279, "precision": 0.6696969696969697, "recall": 0.442, "accuracy": 0.612, "f1": 0.5325301204819277, "negative_accuracy": 0.782, "balanced_accuracy": 0.612, "AUC": 0.612, "CI_95.0": [0.583666895414735, 0.6403331045852649]}

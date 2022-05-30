@@ -1,0 +1,1 @@
+{"model": "models.nn20nd", "dataset": "h109", "split": "validation", "n": 1000, "TP": 375, "FP": 115, "TN": 385, "FN": 125, "precision": 0.7653061224489796, "recall": 0.75, "accuracy": 0.76, "f1": 0.7575757575757575, "negative_accuracy": 0.77, "balanced_accuracy": 0.76, "AUC": 0.8477039999999999, "CI_95.0": [0.8244567453841256, 0.8709512546158742]}

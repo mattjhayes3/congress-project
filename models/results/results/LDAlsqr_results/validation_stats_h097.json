@@ -1,0 +1,1 @@
+{"model": "models.lda", "dataset": "h097", "split": "validation", "n": 1000, "TP": 254, "FP": 220, "TN": 280, "FN": 246, "precision": 0.5358649789029536, "recall": 0.508, "accuracy": 0.534, "f1": 0.5215605749486654, "negative_accuracy": 0.56, "balanced_accuracy": 0.534, "AUC": 0.5339999999999999, "CI_95.0": [0.5030930812297673, 0.5649069187702326]}

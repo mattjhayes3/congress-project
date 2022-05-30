@@ -1,0 +1,1 @@
+{"model": "models.mnnb", "dataset": "h097", "split": "validation", "n": 1000, "TP": 279, "FP": 183, "TN": 317, "FN": 221, "precision": 0.6038961038961039, "recall": 0.558, "accuracy": 0.596, "f1": 0.5800415800415801, "negative_accuracy": 0.634, "balanced_accuracy": 0.5960000000000001, "AUC": 0.596, "CI_95.0": [0.5656477798393215, 0.6263522201606785]}

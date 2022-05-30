@@ -1,0 +1,1 @@
+{"model": "cnn", "dataset": "h106_bayram", "congress": "106", "chamber": "House", "bayram": "style", "split": "test", "n": 1000, "TP": 0, "FP": 0, "TN": 500, "FN": 500, "precision": null, "recall": 0.0, "accuracy": 0.5, "f1": null, "negative_accuracy": 1.0, "balanced_accuracy": 0.5, "AUC": 0.538452, "CI_95.0": [0.5027096777369704, 0.5741943222630297]}

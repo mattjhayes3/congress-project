@@ -1,0 +1,1 @@
+{"model": "models.lda", "dataset": "h114", "split": "validation", "n": 1000, "TP": 332, "FP": 180, "TN": 320, "FN": 168, "precision": 0.6484375, "recall": 0.664, "accuracy": 0.652, "f1": 0.6561264822134387, "negative_accuracy": 0.64, "balanced_accuracy": 0.652, "AUC": 0.652, "CI_95.0": [0.6224567422468786, 0.6815432577531214]}

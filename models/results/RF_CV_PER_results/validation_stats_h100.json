@@ -1,0 +1,1 @@
+{"model": "models.rf_cv", "dataset": "h100", "split": "validation", "n": 1000, "TP": 282, "FP": 163, "TN": 337, "FN": 218, "precision": 0.6337078651685393, "recall": 0.564, "accuracy": 0.619, "f1": 0.5968253968253967, "negative_accuracy": 0.674, "balanced_accuracy": 0.619, "AUC": 0.6190000000000001, "CI_95.0": [0.5890644413912232, 0.648935558608777]}

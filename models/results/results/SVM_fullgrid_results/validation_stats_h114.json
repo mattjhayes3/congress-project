@@ -1,0 +1,1 @@
+{"model": "models.svm", "dataset": "h114", "split": "validation", "n": 1000, "TP": 392, "FP": 107, "TN": 393, "FN": 108, "precision": 0.7855711422845691, "recall": 0.784, "accuracy": 0.785, "f1": 0.7847847847847846, "negative_accuracy": 0.786, "balanced_accuracy": 0.785, "AUC": 0.8710160000000001, "CI_95.0": [0.849504534643666, 0.8925274653563342]}

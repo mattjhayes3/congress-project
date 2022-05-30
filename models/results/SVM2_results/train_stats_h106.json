@@ -1,0 +1,1 @@
+{"model": "models.svm", "dataset": "h106", "split": "train", "n": 4000, "TP": 1805, "FP": 196, "TN": 1804, "FN": 195, "precision": 0.9020489755122438, "recall": 0.9025, "accuracy": 0.90225, "f1": 0.9022744313921518, "negative_accuracy": 0.902, "balanced_accuracy": 0.90225, "AUC": 0.9611169999999999, "CI_95.0": [0.9554205044562589, 0.9668134955437409]}

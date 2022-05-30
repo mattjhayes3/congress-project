@@ -1,0 +1,1 @@
+{"model": "lstm", "dataset": "h100_bayram", "split": "valid", "n": 1000, "TP": 329, "FP": 296, "TN": 204, "FN": 171, "precision": 0.5264, "recall": 0.658, "accuracy": 0.533, "f1": 0.5848888888888888, "negative_accuracy": 0.408, "balanced_accuracy": 0.533, "AUC": 0.5296040000000001, "CI_95.0": [0.4937724046614097, 0.5654355953385904]}

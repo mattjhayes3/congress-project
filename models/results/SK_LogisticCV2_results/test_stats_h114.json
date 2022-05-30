@@ -1,0 +1,1 @@
+{"model": "models.sk_logistic", "dataset": "h114", "split": "test", "n": 1000, "TP": 361, "FP": 123, "TN": 377, "FN": 139, "precision": 0.7458677685950413, "recall": 0.722, "accuracy": 0.738, "f1": 0.733739837398374, "negative_accuracy": 0.754, "balanced_accuracy": 0.738, "AUC": 0.7380000000000001, "CI_95.0": [0.7107369803073549, 0.7652630196926453]}

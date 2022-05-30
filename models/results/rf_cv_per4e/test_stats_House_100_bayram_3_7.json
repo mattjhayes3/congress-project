@@ -1,0 +1,1 @@
+{"model": "rf_cv_per4e", "dataset": "h100_bayram_3_7", "congress": "100", "chamber": "House", "bayram_3_7": "style", "split": "test", "n": 1000, "TP": 299, "FP": 201, "TN": 299, "FN": 201, "precision": 0.598, "recall": 0.598, "accuracy": 0.598, "f1": 0.598, "negative_accuracy": 0.598, "balanced_accuracy": 0.598, "AUC": 0.598, "CI_95.0": [0.567580894513204, 0.6284191054867959]}
