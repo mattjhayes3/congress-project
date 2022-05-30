@@ -5,11 +5,11 @@ import json
 
 # for fmt_congress in ['97', '100', '103', '106', '109']: #,
 # for fmt_congress in []: #,
-n_range = [1,2,3]
+n_range = [1,2]
 for style in ['max_balanced_0']:  # 'bayram'
     for chamber in ["House"]:  # "House", , "Senate"
-        distinct_count_min = 3 
-        absolute_count_min = 7
+        distinct_count_min = 10 
+        absolute_count_min = 50
         out_style = f'{style}_{distinct_count_min}_{absolute_count_min}'
         # for i in range(43, 115):
         for i in [ 97, 100, 103, 106, 109, 112, 114]: #, 100,

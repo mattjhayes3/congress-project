@@ -6,7 +6,7 @@ import json
 
 # for i_split in ['97', '100', '103', '106', '109']: #, 
 # for i_split in []: #, 
-for style in ['bayram' ]: # 'max_balanced_0' 
+for style in ['max_balanced_0' ]: # 'max_balanced_0' 
 	for chamber in ["House"]: # "House", "Senate"  "House",
 		distinct_count_min = 1 
 		absolute_count_min = 1

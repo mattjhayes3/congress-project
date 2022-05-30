@@ -5,3 +5,5 @@ matricies2/**
 models/results/*/models/**
 models/results/results/*/models/*
 models/results/results/nn20nd/models/unigram_trained_model_House_*
+__pycache__/
+models/__pycache__/
