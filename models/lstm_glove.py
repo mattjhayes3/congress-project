@@ -10,7 +10,7 @@ class LSTMGloveModel(SequenceModel):
         self.embedding_size = embedding_size
 
     def name(self):
-        return f'lstm_glove_{self.embedding_size}' if not self.instance_name else f"lstm_glove_{self.embedding_size}_{self.instance_name}"
+        return f'lstm_glove_l32_{self.embedding_size}' if not self.instance_name else f"lstm_glove_l32_{self.embedding_size}_{self.instance_name}"
 
     # inside, save the trained model to the corresponding folder - might be needed in the future
     def fit(self, training_matrix, training_labels, validation_matrix, validation_labels, dictionary):
@@ -40,14 +40,14 @@ class LSTMGloveModel(SequenceModel):
         es = keras.callbacks.EarlyStopping(monitor='val_accuracy', min_delta=0, patience=5, verbose=0, mode='auto', restore_best_weights=True)
         self.model = keras.models.Sequential([layers.Embedding(dictionary_size, self.embedding_size, input_length= np.shape(training_matrix)[1], embeddings_initializer=keras.initializers.Constant(embedding_matrix), trainable=True),
                                             # layers.Dropout(0.2),
-                                            layers.LSTM(128),
+                                            layers.LSTM(32),
                                             # layers.Dropout(0.2),
-                                            keras.layers.Dense(2, activation='softmax'),
+                                            keras.layers.Dense(2, activation='sigmoid'),
                                             ])
 
         # with sgd optimizer, the result was 0.74, i just replaced it with adam and got 0.88 - the highest performance so far
-        self.model.compile(optimizer='adam', loss='sparse_categorical_crossentropy',
-                        metrics=['sparse_categorical_crossentropy', 'accuracy'])
+        self.model.compile(optimizer='adam', loss='binary_crossentropy',
+                        metrics=['binary_crossentropy', 'accuracy'])
         self.model.fit(training_matrix, training_labels, epochs=200, batch_size=128,
                     validation_data=(validation_matrix, validation_labels), callbacks=[es])
 

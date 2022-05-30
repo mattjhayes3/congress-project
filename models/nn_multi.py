@@ -9,7 +9,7 @@ from .model import Model
 
 class NNMultiModel(Model):
     def name(self):
-        return 'nnmulti2_relu' if not self.instance_name else f"nnmulti2_relu_{self.instance_name}"
+        return 'nnmulti2_tanh' if not self.instance_name else f"nnmulti2_tanh_{self.instance_name}"
 
     # def use_gpu(self):
     #     return True
@@ -25,10 +25,10 @@ class NNMultiModel(Model):
         # define the early stopping criteria
         es = keras.callbacks.EarlyStopping(monitor='val_accuracy', min_delta=0, patience=15, verbose=0, mode='auto', restore_best_weights=True)
         self.model = keras.models.Sequential([
-                                            keras.layers.Dense(2048, input_dim=num_features, activation='relu'),
+                                            keras.layers.Dense(2048, input_dim=num_features, activation='tanh'),
                                             # keras.layers.Dropout(0.15),
                                             keras.layers.Dropout(0.5),
-                                            keras.layers.Dense(256, input_dim=num_features, activation='relu'),
+                                            keras.layers.Dense(256, input_dim=num_features, activation='tanh'),
                                             # keras.layers.Dropout(0.15),
                                             keras.layers.Dropout(0.5),
                                             # keras.layers.Dense(40, input_dim=num_features, activation='relu'),

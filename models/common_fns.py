@@ -54,7 +54,7 @@ def rowNormalizeMatrix(matrix_):
     return matrix_2
 
 def applyLogNormalization(feature_matrix):
-    assert np.allclose(np.abs(feature_matrix), feature_matrix)
+    # assert np.allclose(np.abs(feature_matrix), feature_matrix)
     # our default scaling method is the conversion of feature values to log domain
     # this shrinks the magnitude-related differences between feature types
     # also, keeps the feature value sign intact - which standard scaling methods fail to do so
@@ -245,7 +245,7 @@ def saveSplitStats(save_dir, model_name, congress, chamber, style, split, predic
         else:
             predicted_probs = predicted_probs[:, 0]
 
-    result = {'model': model_name, 'dataset':f'h{congress}_{style}', 'congress': congress, 'chamber':chamber, style:'style', 'split': split}
+    result = {'model': model_name, 'dataset':f'h{congress}_{style}', 'congress': congress, 'chamber':chamber, 'style':style, 'split': split}
 
     positive_indices = true_labels == 1
     negative_indices = ~positive_indices

@@ -6,51 +6,66 @@ import os
 if __name__ == "__main__":
     stats_per_model = dict()
     all_stats = dict() # glob.glob('models/*/*_stats_*.json') + 
-    for file in set(glob.glob('models/results/*/*_stats_*.json')): # "rf_cv_per2" not in file.lower() and  "rf_cv_per3" not in fname and
+    all_files = set(glob.glob('models/results/*/*_stats_*.json') + glob.glob('models/results/reuslts/*/*_stats_*.json'))
+    print(f"found {len(all_files)} files")
+    for file_num, file in enumerate(all_files): # "rf_cv_per2" not in file.lower() and  "rf_cv_per3" not in fname and
         fname = os.path.dirname(file).lower()
         # if  "rf_cv_per4" not in fname and "svm_fullgrid" not in fname and "svm_cv_c" not in fname:
             # continue
         with open(file, 'r') as f:
-
             stat = json.load(f)
-            stat['source'] = file
-            stat['model'] = stat['model'].replace('models.', '') + "_"+ fname
-            stat['model'] = stat['model'].replace('models', 'm_').replace('results', 'r_')
-            dset_suffix = stat['dataset'][4:]
-            stat['dataset'] = stat['dataset'][:4]
-            stat['model'] = f"{stat['model']}_{dset_suffix}"
-            if "_House_" in file:
-                stat['model'] = f"{stat['model']}_new"
-            assert not "old" in stat['model'], f
-            if stat['split'] == 'test' : # and 'models/RF_CV_PER_' not in stat['source']
-                if stat['model'] not in stats_per_model:
-                    stats_per_model[stat['model']] = dict()
-                assert stat['dataset'] not in stats_per_model[stat['model']], f"{stat['dataset']} already from {stats_per_model[stat['model']][stat['dataset']]['source']}, path={file}"
-                stats_per_model[stat['model']][stat['dataset']] = stat
-                print(f"found model={stat['model']}, dataset={stat['dataset']}, path={file}")
+        switch = None
+        for k, v in stat.items():
+            if v == "style":
+                switch = k
+                break
+        if switch is not None:
+            stat["style"] = switch
+            del stat[switch]
+        stat['source'] = file
+        stat['model'] = stat['model'].replace('models.', '') + "_"+ fname
+        stat['model'] = stat['model'].replace('models', 'm_').replace('results', 'r_')
+        dset_suffix = stat['dataset'][4:]
+        stat['dataset'] = stat['dataset'][:4]
+        stat['model'] = f"{stat['model']}_{dset_suffix}"
+        if "_House_" in file:
+            stat['model'] = f"{stat['model']}_new"
+        assert not "old" in stat['model'], f
+        if stat['split'] == 'test' : # and 'models/RF_CV_PER_' not in stat['source']
+            if stat['model'] not in stats_per_model:
+                stats_per_model[stat['model']] = dict()
+            assert stat['dataset'] not in stats_per_model[stat['model']], f"{stat['dataset']} already from {stats_per_model[stat['model']][stat['dataset']]['source']}, path={file}"
+            stats_per_model[stat['model']][stat['dataset']] = stat
+            # print(f"found model={stat['model']}, dataset={stat['dataset']}, path={file}")
         if len(all_stats) == 0:
             for k,v in stat.items():
                 all_stats[k] = [v]
+            print(f" all stats is {all_stats}")
         else:
             # if stat.keys() != all_stats.keys():
             #     print(f"skipping {file}, {stat.keys()} not the same as {all_stats.keys()}")
             #     continue
+            # assert all_stats.keys() == stat.keys(), f"got {stat.keys()}, expected {all_stats.keys()}"
             for k,v in stat.items():
                 if k in all_stats:
                     all_stats[k].append(v)
-    lens = dict()
-    for k,v in all_stats.items():
-        l = len(v)
-        if l < 3:
-            print("wrong length:",k, v)
-        if not l in lens:
-            lens[l] = 1
-        else:
-            lens[l] += 1
-    assert len(lens)==1, lens
+        lens = dict()
+        for k,v in all_stats.items():
+            l = len(v)
+            if l == 147:
+                print("wrong length:",k, v)
+            if not l in lens:
+                # print(f"adding to lens for {k}")
+                lens[l] = 1
+            else:
+                lens[l] += 1
+        assert len(lens)==1, f"{lens}, file={file}"
+        # if file_num < 5:
+        #     print(f"allstats is {all_stats}")
+
 
     df = pd.DataFrame.from_dict(all_stats)
-    print(df)
+    print(f"all stats is {df}")
     # log_stats = df[(df['model'] == 'models.logistic') & (df['split'] == 'test')]
     test_stats = df[(df['split'] == 'test') & (df['model'] != 'dem_baseline') & (df['model'] != 'rep_baseline')].sort_values(by=['dataset', 'model'])
     print("test stats:")
@@ -106,7 +121,7 @@ if __name__ == "__main__":
         neg_acc_model_by_dataset[ds] = [None] * 7
         pos_acc_model_by_dataset[ds] = [None] * 7
     # print(f"len acc models: {len(acc_model_by_dataset['model'])}")
-    # print(f"len adding models: {len(models)}")
+    print(f"len adding models: {len(models)}")
     for model in models:
         if not 'baseline' in model : # and model not in ['rf', 'sk_logistic']
             # print(f"len acc models: {len(acc_model_by_dataset['model'])}")

@@ -114,7 +114,7 @@ def correctText(speech_text):
     # then, remaining periods should be mostly the end of sentence info, or those replacing comma's
     period_separated = speech_text.split('.')
 
-    if len(period_separated) <= 2:  # to make sure there are at least 2 sentences, or comma separated stuff
+    if len(period_separated) < 2:  # to make sure there are at least 2 sentences, or comma separated stuff
         return ''  # not enough sentences to begin with, return just an empty string
     new_text = period_separated[0]
 

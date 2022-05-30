@@ -112,7 +112,7 @@ corrections = { "(thle|tihe)": "the",
 corrections = {re.compile(f"\\b{k}\\b") :v for k,v in corrections.items()}
 
 abbreviations = {
-    '(Mr|Ms|Hon|Ho|esq|Stat|c)\\.': f"\\1{escaped_dot}",
+    '(Mr|Mrs|Ms|Hon|Ho|esq|Stat|c)\\.': f"\\1{escaped_dot}",
     r'(a|p)\.m\.': f"\\1{escaped_dot}m{escaped_dot}",
     r'i\.e\.': f'i{escaped_dot}e{escaped_dot}', 
     r'e\.g\.': f'e{escaped_dot}g{escaped_dot}',
@@ -176,7 +176,7 @@ def correctText(speech_text):
     # then, remaining periods should be mostly the end of sentence info, or those replacing comma's
     period_separated = speech_text.split('.')
 
-    if len(period_separated) <= 2:  # to make sure there are at least 2 sentences, or comma separated stuff
+    if len(period_separated) < 2:  # to make sure there are at least 2 sentences, or comma separated stuff
         return ''  # not enough sentences to begin with, return just an empty string
     new_text = period_separated[0]
 
@@ -214,7 +214,7 @@ def shouldExcludeText(speech_text):
     # eliminate few-sentence long texts
     period_separated = speech_text.split(' . ')
 
-    if len(period_separated) < 3:  # remove those speeches with less than 5 sentences long
+    if len(period_separated) < 1:  # remove those speeches with less than 5 sentences long
         return True
     elif 'take the opportunity to express my appreciation to' in speech_text and 'intern' in speech_text:
         return True  # these speeches are intern appreciation, delete them
@@ -229,10 +229,11 @@ def shouldExcludeText(speech_text):
 
 
 # selected_congresses = ['097', '098', '099', '100', '101', '102', '103', '104', '105', '106', '114', '113', '112', '111', '110', '109', '108', '107']
-# selected_congresses = ['100', '106', '114', '112', '109']
+selected_congresses = [97, 100, 106, 114, 112, 109, 112, 114]
+out_dir = "../../processed_data2"
 # selected_congresses = ['103']
 # selected_congresses = [ 114]#range(100, )100,103, 106, 
-selected_congresses = range(98, 115) # 56,
+# selected_congresses = range(98, 115) # 56,
 
 for selected_congress in selected_congresses:
     oov_counts = dict()
@@ -240,8 +241,8 @@ for selected_congress in selected_congresses:
     print(f"processing congress {selected_congress}")
 
     fmt_congress = "%03d" % selected_congress
-    os.makedirs('../../processed_data2/Senate_' + fmt_congress, exist_ok=True)
-    os.makedirs('../../processed_data2/House_' + fmt_congress, exist_ok=True)
+    os.makedirs(f'{out_dir}/Senate_{fmt_congress}', exist_ok=True)
+    os.makedirs(f'{out_dir}/House_{fmt_congress}', exist_ok=True)
 
     speech_path = f"{root}/speeches_{fmt_congress}.txt"
     # collect the speeches of this congress here, associated with it's unique speech id
@@ -260,7 +261,7 @@ for selected_congress in selected_congresses:
             print(f"{int(c/len(lines) * 100)}%")
         split_line = line.split('|', 1)
         if len(split_line) < 2:
-            print("unexpected line: '%s'" %line)
+            print("unexpected line @%d: '%s'" %(c+2, line))
             continue
         speech_id = split_line[0]
         original_text = split_line[1]
@@ -269,13 +270,17 @@ for selected_congress in selected_congresses:
         speech_text = correctText(original_text)
 
         # add this text to the dictionary only if it is long and relevant enough
+        try:
+            speech_id = int(speech_id)
+        except ValueError:
+            continue
         if not shouldExcludeText(speech_text):
-            speech_dict[int(speech_id)] = speech_text
+            speech_dict[speech_id] = speech_text
             if c in [1, 10, 100, 1000, 2000]:
                 print(
                     f"adding {speech_id}: {speech_text}\n from {original_text}")
         else:
-            thrown_away_ids.add(int(speech_id))
+            thrown_away_ids.add(speech_id)
             if c in [1, 10, 100, 1000, 2000]:
                 print(f"throwing {speech_id}: {speech_text}")
         c += 1
@@ -290,7 +295,6 @@ for selected_congress in selected_congresses:
         if c > 0:
             speech_id = line.split('|')[0]
             date_ = line.split('|')[2]
-
             date_dict[int(speech_id)] = date_
         c += 1
     date_fo.close()
@@ -317,11 +321,11 @@ for selected_congress in selected_congresses:
             # start writing up what you read here
             if row['chamber'] == 'H':
                 # print('writing house ' + filenamew)
-                with open('../../processed_data2/House_' + fmt_congress + '/' + filenamew, 'w') as fo_w:
+                with open(f'{out_dir}/House_{fmt_congress}/{filenamew}', 'w') as fo_w:
                     fo_w.write(json.dumps(row))
             elif row['chamber'] == 'S':
                 # print('writing senate ' + filenamew)
-                with open('../../processed_data2/Senate_' + fmt_congress + '/' + filenamew, 'w') as fo_w:
+                with open(f'{out_dir}/Senate{ fmt_congress}/{filenamew}', 'w') as fo_w:
                     fo_w.write(json.dumps(row))
             else:
                 print(f"Unexpected chamber {row['chamber']}")

@@ -22,6 +22,8 @@ from models.dem_baseline import DemBaselineModel
 from models.lda import LDAModel
 from models.sk_logistic import SKLogisticModel
 from models.lstm_glove import LSTMGloveModel
+from models.lstm_drop_bidi import LSTMDropBiDiModel
+from models.lstm_bidi import LSTMBiDiModel
 from models.lstm_drop import LSTMDropModel
 from models.lstm_word2vec import LSTMWord2VecModel
 from models.lstm_drop_glove import LSTMDropGloveModel
@@ -102,13 +104,12 @@ def run(save_dir, m, style, congress, chamber):
     #         print(f"found the file 3")
 
     ccs = f"{chamber}_{congress}_{style}"
-    # ccss = f"{ccs}_1_1"
-    ccss = f"{ccs}"
-    # styles = f"{style}_1_1"
-    styles = f"{style}"
+    ccss = f"{ccs}_1_1" # 
+    styles = f"{style}_1_1" # 
     # read the complete feature matrices
     print(f"loading matrix... ")
     if m.is_sequence():
+        print(f"reading from matricies/{ccss}_sequence_matrix.txt.npz")
         feature_matrix = sparse.load_npz(
             f"matricies/{ccss}_sequence_matrix.txt.npz").toarray()
         with open(f"matricies/{ccss}_sequence_row_files.txt") as f_rownames:
@@ -141,11 +142,12 @@ def run(save_dir, m, style, congress, chamber):
     test_matrix = matrices['test']
     dictionary = dict()
     if m.is_sequence():
+        print(f"reading from matricies/dicts/{ccss}_sequence.json")
         with open(f"matricies/dicts/{ccss}_sequence.json", "r") as j:
             dictionary = json.load(j)
             rev_dict = {v: k for k, v in dictionary.items()}
             # print(rev_dict)
-        for i in [1, 20,  50]:
+        for i in [ 10]:
             for n, a in matrices.items():
                 z = a.toarray()
                 s = z[i, :]
@@ -235,16 +237,18 @@ if __name__ == "__main__":
     #             LSTMDropGloveModel(100),
     #             LSTMDropGloveModel(200),
     #             LSTMDropGloveModel(300),
-    #             ]:  LogisticModel(), NN20DModel(), NN20NDModel(), NN1000DModel(), NN1000NDModel(), MNNBModel(), KNNModel(),LDAModel(), RFCVModel(), BoostModel(), SVMModel()
-    for m in [LogisticModel(), NN20DModel(), NN20NDModel(), NN1000DModel(), NN1000NDModel(), MNNBModel(), KNNModel(),LDAModel(), RFCVModel(), BoostModel(), SVMModel()]:
-    # for m in [LSTMDropModel()]: # , NNMultiModel()
+    #             ]:  LogisticModel(), NN20DModel(), NN20NDModel(), NN1000DModel(), NN1000NDModel(), MNNBModel(), KNNModel(),LDAModel(), RFCVModel(), BoostModel(), SVMModel() 
+    # for m in [ RFCVModel(), BoostModel(), SVMModel()]: # LogisticModel(), NN20DModel(), NN20NDModel(), NN1000DModel(), NN1000NDModel(), MNNBModel(), KNNModel(), LDAModel(),
+    ### for m in [LSTMDropModel(), LSTMDropBiDiModel(), LSTMBiDiModel(), NNMultiModel()]:
+    for m in [CNNModel()]: #   LDAModel() LSTMDropModel(), LSTMDropBiDiModel(), , NNMultiModel() LSTMDropGloveModel(50), LSTMDropGloveModel(100)
     # , LSTMModel(), LogisticModel(), NN20DModel(), NN20NDModel(), NN1000DModel(), NN1000NDModel(), SVMModel(), MNNBModel(), KNNModel(), LDAModel(), RFCVModel(), BoostModel()]:  
     # for m in [LogisticModel('tfidf'), NN20DModel('tfidf'), NN20NDModel('tfidf'), NN1000DModel('tfidf'), NN1000NDModel('tfidf'), SVMModel('tfidf'), MNNBModel('tfidf'), KNNModel('tfidf'), LDAModel('tfidf'), RFCVModel('tfidf'), BoostModel('tfidf')]:  
         save_dir = "models/" + m.getSaveDirectory()
         for subdir in ["", "models/", "Training/", "Validation/", "Test/"]:
             os.makedirs(save_dir + subdir, exist_ok=True)
         # for i_split in [ '100', '103', '106', '109', '112', '114']:  '097',
-        for style in ['3gram_max_balanced_0', '2gram_max_balanced_0']: #
+        for style in ['bayram']: #
+        # for style in ['3gram_max_balanced_0', '2gram_max_balanced_0']: # '097',
             for chamber in ['House']:
                 for congress in ['097', '100',  '103', '106', '109', '112', '114']:
                     np.random.seed(0)

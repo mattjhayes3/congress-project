@@ -8,62 +8,76 @@ def getBasenames(filename_list):
 if __name__ == "__main__":
     # select 3000 speeches from each set at random
     seed = 0
-    style = "max_balanced"
+    style = "small"
     random.seed(seed)
     processed_dir = '../../processed_data/'
     bayram_congresses = [97, 100, 103, 106, 109, 112, 114]
     # selected_congresses = [97, 100, 103, 106, 109, 112, 114]#range(43, 115)
-    selected_congresses = [44]#range(43, 115)  # [100]
+    selected_congresses = range(97, 115)  # [100]
     # selected_congresses = range(97, 115)
-    for chamber in ["House"]: # , , 
+    for chamber in ["House", "Senate"]: # , , 
         for i in selected_congresses:
             fmt_congress = "%03d" % i
             print(f'Processsing {chamber} {i} {style}')
             files_dem = getBasenames(glob.glob(f'{processed_dir}{chamber}{fmt_congress}_unigrams/d_*.txt'))
             files_rep = getBasenames(glob.glob(f'{processed_dir}{chamber}{fmt_congress}_unigrams/r_*.txt'))
             files_dem.sort()
-            files_rep.sort()            
+            files_rep.sort()
             all_files = files_dem + files_rep
             all_files.sort()
             existing_test = []
+            existing_train = []
+            existing_valid = []
             if chamber == "House" and i in bayram_congresses:
-                with open(f'../splits/test{fmt_congress}.txt', 'r') as existing_test_f:
+                with open(f'../splits/House{fmt_congress}_bayram_test.txt', 'r') as existing_test_f:
                     existing_test = existing_test_f.read().splitlines()
                 assert len(existing_test) > 0
                 print(f"found {len(existing_test)} exisitng test cases")
-                for t in existing_test:
-                    assert t in all_files, t
-                    all_files.remove(t)
-                    assert t not in all_files
-                    if t.startswith("d_"):
-                        assert t in files_dem
-                        files_dem.remove(t)
-                        assert t not in files_dem
-                    elif t.startswith("r_"):
-                        assert t in files_rep
-                        files_rep.remove(t)
-                        assert t not in files_rep
-                    else:
-                        raise Exception(f"Unexpected path: '{t}'")
+                
+                with open(f'../splits/House{fmt_congress}_bayram_train.txt', 'r') as existing_train_f:
+                    existing_train = existing_train_f.read().splitlines()
+                assert len(existing_train) > 0
+                print(f"found {len(existing_train)} exisitng train cases")
+
+                with open(f'../splits/House{fmt_congress}_bayram_valid.txt', 'r') as existing_valid_f:
+                    existing_valid = existing_valid_f.read().splitlines()
+                assert len(existing_valid) > 0
+                print(f"found {len(existing_valid)} exisitng valid cases")
+
+                for existing in [existing_train, existing_valid, existing_test]:
+                    for t in existing:
+                        assert t in all_files, t
+                        all_files.remove(t)
+                        assert t not in all_files
+                        if t.startswith("d_"):
+                            assert t in files_dem
+                            files_dem.remove(t)
+                            assert t not in files_dem
+                        elif t.startswith("r_"):
+                            assert t in files_rep
+                            files_rep.remove(t)
+                            assert t not in files_rep
+                        else:
+                            raise Exception(f"Unexpected path: '{t}'")
             # print(f"all files: {all_files}")
-            print(f"len allfiles={len(all_files)}, len depfiles={len(files_dem)}, len repfiles={len(files_rep)},")
+            print(f"len allfiles={len(all_files)}, len demfiles={len(files_dem)}, len repfiles={len(files_rep)},")
             random.shuffle(files_dem)
             random.shuffle(files_rep)
             random.shuffle(all_files)
             if style == "small":
-                num_valid = 500
+                num_valid = 500 - int(len(existing_valid) /2)
                 num_test = 500 - int(len(existing_test) /2)
-                num_train = 2000
+                num_train = 2000 - int(len(existing_train) /2)
             elif style == "max_balanced":
                 n = min(len(files_dem), len(files_rep))
-                num_valid = int(n * 0.15)
+                num_valid = int(n * 0.15)  - int(len(existing_valid) /2)
                 num_test = int(n * 0.15) - int(len(existing_test)  /2)
-                num_train = int(n * 0.7)
+                num_train = int(n * 0.7) - int(len(existing_train) /2)
             elif style == "unbalanced":
                 n = min(len(all_files))
-                num_valid = int(n * 0.15)
+                num_valid = int(n * 0.15) -len(existing_valid)
                 num_test = int(n * 0.15) -len(existing_test)
-                num_train = int(n * 0.7)
+                num_train = int(n * 0.7) -len(existing_train)
             else:
                 raise Exception('unexpected style '+style)
 
@@ -74,10 +88,10 @@ if __name__ == "__main__":
             selected_test_files = [] + existing_test
             # selected_test_files_dem = []
             # selected_test_files_rep = []
-            selected_train_files = []
+            selected_train_files = [] + existing_train
             # selected_train_files_dem = []
             # selected_train_files_rep = []
-            selected_valid_files = []
+            selected_valid_files = [] + existing_valid
             # selected_valid_files_dem = []
             # selected_valid_files_rep = []
             if style != "unbalanced":
@@ -95,7 +109,7 @@ if __name__ == "__main__":
             fo_train = open(f'../splits/{dataset}_{seed}_train.txt', 'w')
             fo_test = open(f'../splits/{dataset}_{seed}_test.txt', 'w')
             fo_valid = open(f'../splits/{dataset}_{seed}_valid.txt', 'w')
-            all_files += existing_test
+            all_files += existing_test + existing_valid + existing_train
             all_files.sort()
             for file_ in all_files:
                 if file_ in selected_test_files:

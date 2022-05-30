@@ -6,14 +6,14 @@ from .model import SequenceModel
 
 class LSTMDropModel(SequenceModel):
     def use_gpu(self):
-        return False
+        return True
 
     def __init__(self, instance_name=None):
         super().__init__(instance_name)
         self.embedding_size = 128
 
     def name(self):
-        return 'lstm_drop_128_l350' if not self.instance_name else f"lstm_drop_128_l350_{self.instance_name}"
+        return 'lstm2_drop_128_05_l32' if not self.instance_name else f"lstm2_drop_128_05_l32_{self.instance_name}"
 
     # inside, save the trained model to the corresponding folder - might be needed in the future
     def fit(self, training_matrix, training_labels, validation_matrix, validation_labels, dictionary):
@@ -31,7 +31,8 @@ class LSTMDropModel(SequenceModel):
         self.model = keras.models.Sequential([layers.Embedding(dictionary_size, self.embedding_size, input_length= np.shape(training_matrix)[1]),
                                             layers.Dropout(0.5),
                                             # layers.LSTM(128, dropout=0.75, return_sequences=True),
-                                            layers.LSTM(350, dropout=0.5),
+                                            layers.LSTM(32, return_sequences=True),
+                                            layers.LSTM(32, dropout=0.5),
                                             layers.Dropout(0.5),
                                             # layers.Dropout(0.2),
                                             keras.layers.Dense(1, activation='sigmoid'),
