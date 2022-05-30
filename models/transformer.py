@@ -10,6 +10,10 @@ import shutil
 class TransformerBlock(layers.Layer):
     def __init__(self, embed_dim, num_heads, ff_dim, rate=0.1):
         super(TransformerBlock, self).__init__()
+        self.embed_dim = embed_dim
+        self.num_heads = num_heads
+        self.ff_dim = ff_dim
+        self.rate = rate
         self.att = layers.MultiHeadAttention(num_heads=num_heads, key_dim=embed_dim)
         self.ffn = keras.Sequential(
             [layers.Dense(ff_dim, activation="relu"), layers.Dense(embed_dim),]
@@ -30,16 +34,19 @@ class TransformerBlock(layers.Layer):
     def get_config(self):
         config = super.get_config()
         config.update({
-            'embed_dim':embed_dim, 
-            'num_heads':num_heads, 
-            'ff_dim':ff_dim, 
-            'rate':rate,
+            'embed_dim':self.embed_dim, 
+            'num_heads':self.num_heads, 
+            'ff_dim':self.ff_dim, 
+            'rate':self.rate,
         })
         return config
 
 class TokenAndPositionEmbedding(layers.Layer):
     def __init__(self, maxlen, vocab_size, embed_dim):
         super(TokenAndPositionEmbedding, self).__init__()
+        self.maxlen = maxlen
+        self.vocab_size = vocab_size
+        self.embed_dim = embed_dim
         self.token_emb = layers.Embedding(input_dim=vocab_size, output_dim=embed_dim)
         self.pos_emb = layers.Embedding(input_dim=maxlen, output_dim=embed_dim)
 
@@ -49,6 +56,14 @@ class TokenAndPositionEmbedding(layers.Layer):
         positions = self.pos_emb(positions)
         x = self.token_emb(x)
         return x + positions
+    
+    def get_config(self):
+        config =  super().get_config()
+        config.update({
+            'maxlen': self.maxlen,
+            'vocab_size': self.vocab_size,
+            'embed_dim': self.embed_dim,
+        })
 
 class TransformerModel(SequenceModel):
     def __init__(self, instance_name=None):
