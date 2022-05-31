@@ -32,7 +32,7 @@ class TransformerBlock(layers.Layer):
         return self.layernorm2(out1 + ffn_output)
     
     def get_config(self):
-        config = super.get_config()
+        config = super().get_config()
         config.update({
             'embed_dim':self.embed_dim, 
             'num_heads':self.num_heads, 
