@@ -5,14 +5,15 @@ import json
 
 # for fmt_congress in ['97', '100', '103', '106', '109']: #,
 # for fmt_congress in []: #,
-n_range = [1,2]
+n_range = [1,2,3]
 for style in ['max_balanced_0']:  # 'bayram'
     for chamber in ["House"]:  # "House", , "Senate"
         distinct_count_min = 10 
         absolute_count_min = 50
         out_style = f'{style}_{distinct_count_min}_{absolute_count_min}'
-        # for i in range(43, 115):
-        for i in [ 97, 100, 103, 106, 109, 112, 114]: #, 100,
+        # for i in range(100, 115): # stopped 2gram at 100
+        for i in range(97, 115):
+        # for i in [ 97, 100, 103, 106, 109, 112, 114]: #, 100,
             # if i in [ 103, 106, 109, 112, 114] and chamber =="House":
             # 	continue
             fmt_congress = "%03d" % i
@@ -36,14 +37,14 @@ for style in ['max_balanced_0']:  # 'bayram'
                             lines = f.readlines()
                             assert len(
                                 lines) > 0, f"empty file: {path}, {lines}"
-                            sentences = lines[0].split(" * ")
                         tokens = []
-                        for sentence in sentences:
-                            words = sentence.split()
-                            for n in n_range:
-                                for start in range(len(words)-n+1):
-                                    tokens.append(
-                                        " ".join(words[start:start+n]))
+                        words = lines[0].split()
+                        for n in n_range:
+                            if len(words) < n:
+                                continue
+                            for start in range(len(words)-n+1):
+                                tokens.append(
+                                    " ".join(words[start:start+n]))
                         for token in set(tokens):
                             # if token in dictionary:
                             #     continue
@@ -78,13 +79,13 @@ for style in ['max_balanced_0']:  # 'bayram'
                 with open(f"../processed_data/{chamber}{fmt_congress}_sentences/{path}") as f:
                     lines = f.readlines()
                     assert len(lines) > 0, f"empty file! {f}"
-                    sentences = lines[0].split(" * ")
                 tokens = []
-                for sentence in sentences:
-                    words = sentence.split()
-                    for n in n_range:
-                        for start in range(len(words)-n+1):
-                            tokens.append(" ".join(words[start:start+n]))
+                words = lines[0].split()
+                for n in n_range:
+                    if len(words)< n:
+                        continue
+                    for start in range(len(words)-n+1):
+                        tokens.append(" ".join(words[start:start+n]))
                 for token in tokens:
                     if token in dictionary:
                         newrow[dictionary[token]] += 1

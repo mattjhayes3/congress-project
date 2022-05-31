@@ -8,7 +8,7 @@ class Model:
 		self.model = None
 		self.grid = None
 
-	def getClassifierParams(self, training_input, training_labels, validation_input, validation_labels):
+	def getClassifierParams(self, training_matrix, training_labels, validation_matrix,  validation_labels, dictionary):
 		return None
 
 	def name(self):

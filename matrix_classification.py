@@ -20,6 +20,7 @@ from models.sk_logistic import SKLogisticModel
 from models.lstm_glove import LSTMGloveModel
 from models.lstm_drop_bidi import LSTMDropBiDiModel
 from models.lstm_bidi import LSTMBiDiModel
+from models.xgboost import XGBoostModel
 from models.lstm_drop import LSTMDropModel
 from models.lstm_word2vec import LSTMWord2VecModel
 from models.lstm_drop_glove import LSTMDropGloveModel
@@ -45,40 +46,10 @@ import glob
 import pandas as pd
 from scipy import sparse
 
-# sk_models = [mnnb, rf, lda, sk_logistic, boost, knn]
-# cv_models = [svm, rf_cv, knn, boost, sk_logistic]
-# gpu_models = [nn1000d, nn1000nd ] # logistic
-
 # print(f'gpus= {K.tensorflow_backend._get_available_gpus()}')
-###########################################################################
-
-# Read the current classifier's save directory
-
-
-feature_type = 'unigram'
-# baselines = [rep_baseline, dem_baseline]
 # tf.debugging.set_log_device_placement(True)
 
-# def rowNormalizeMatrix(matrix_):
-#     row_wise_sqrts = np.sqrt(np.sum(np.square(matrix_), axis=1))
-#     matrix_2 = np.copy(matrix_)
-
-#     # now divide each row items with the corresponding square root values
-#     for i_row in range(np.shape(matrix_2)[0]):
-#         if row_wise_sqrts[i_row] != 0:
-#             matrix_2[i_row, :] = matrix_2[i_row, :] / row_wise_sqrts[i_row]
-
-#     return matrix_2
-
-# def applyFeaturePreprocessing(feature_matrix):
-#     assert np.allclose(np.abs(feature_matrix), feature_matrix)
-#     # our default scaling method is the conversion of feature values to log domain
-#     # this shrinks the magnitude-related differences between feature types
-#     # also, keeps the feature value sign intact - which standard scaling methods fail to do so
-#     feature_matrix = np.sign(feature_matrix)*np.log( np.abs(feature_matrix) + 1 )
-#     feature_matrix = rowNormalizeMatrix(feature_matrix)
-#     return feature_matrix
-
+# baselines = [rep_baseline, dem_baseline]
 
 def run(save_dir, m, style, style_w_count, congress, chamber):
     style_wo_gram = style.replace('2gram_', '').replace('3gram_', '')
@@ -90,16 +61,6 @@ def run(save_dir, m, style, style_w_count, congress, chamber):
         all_validation_files = f.read().split()
     with open(f'splits/{chamber}{congress}_{style_wo_gram}_test.txt', 'r') as f:
         all_test_files = f.read().split()
-
-    # for fl in all_training_files:
-    #     if "d_adam_smith_19991109_1060106256.txt" in fl:
-    #         print(f"found the file 1")
-    # for fl in all_validation_files:
-    #     if "d_adam_smith_19991109_1060106256.txt" in fl:
-    #         print(f"found the file 2")
-    # for fl in all_test_files:
-    #     if "d_adam_smith_19991109_1060106256.txt" in fl:
-    #         print(f"found the file 3")
 
     ccs = f"{chamber}_{congress}_{style}"
     ccss = f"{chamber}_{congress}_{style_w_count}"
@@ -167,9 +128,6 @@ def run(save_dir, m, style, style_w_count, congress, chamber):
     # if classifier has no such dependence, params_ will be an empty list [] and classifier functions will ignore it
     #params_ = cf.getClassifierParams(training_matrix, validation_matrix, training_labels, validation_labels)
 
-    # train the classifier - save the trained model - in case it might be necessary to re-use it in the future
-    #model = cf.fit(training_matrix, training_labels, params_)
-    #filename = str(save_dir + 'models/'+feature_type+'_trained_model_h'+ str(i_split) + '.sav')
     #pickle.dump(model, open(filename, 'wb'))
 
     # print(f"type(training_matrix)={type(training_matrix)}, type(training_labels)={type(training_labels)}")
@@ -177,18 +135,18 @@ def run(save_dir, m, style, style_w_count, congress, chamber):
 
     os.makedirs(save_dir + 'models/', exist_ok=True)
     print(f"fitting...")
-    #grid = m.getClassifierParams(training_matrix, training_labels, validation_matrix, validation_labels, dictionary)
-    #if grid is not None:
-    #    df = pd.DataFrame.from_dict(grid.cv_results_)
-    #    df.sort_values('rank_test_score')
-    #    df.to_csv(f'{save_dir}models/{chamber}{congress}_{style}_cv_results.csv')
+    grid = m.getClassifierParams(training_matrix, training_labels, validation_matrix, validation_labels, dictionary)
+    if grid is not None:
+       df = pd.DataFrame.from_dict(grid.cv_results_)
+       df.sort_values('rank_test_score')
+       df.to_csv(f'{save_dir}models/{chamber}{congress}_{style}_cv_results.csv')
     m.fit(training_matrix, training_labels,
           validation_matrix, validation_labels, dictionary)
     if not m.is_baseline():
-        with open(f"{save_dir}models/{feature_type}_trained_model_{ccs}.json", "w") as json_file:
+        with open(f"{save_dir}models/unigram_trained_model_{ccs}.json", "w") as json_file:
             json_file.write(m.get_json())
     if m.is_h5():
-        m.model.save_weights(f"{save_dir}models/{feature_type}_trained_model_{ccs}.h5")
+        m.model.save_weights(f"{save_dir}models/unigram_trained_model_{ccs}.h5")
 
     # perform the classifications using the same trained classifier
     training_classification_results_prob = m.predict(training_matrix.toarray())
@@ -197,13 +155,13 @@ def run(save_dir, m, style, style_w_count, congress, chamber):
     test_classification_results_prob = m.predict(test_matrix.toarray())
 
     # save the file level feature vector classification results
-    train_classifications_path = f"{save_dir}Training/training_classified_{feature_type}_%s_{ccss}.txt"
+    train_classifications_path = f"{save_dir}Training/training_classified_unigram_%s_{ccss}.txt"
     com.saveFileLevelClassificationResults(congress, training_row_filenames, training_labels, training_classification_results_prob,
                                            train_classifications_path, np.shape(training_matrix)[1])
-    val_classifications_path = f"{save_dir}Validation/validation_classified_{feature_type}_%s_{ccss}.txt"
+    val_classifications_path = f"{save_dir}Validation/validation_classified_unigram_%s_{ccss}.txt"
     com.saveFileLevelClassificationResults(congress, validation_row_filenames, validation_labels, validation_classification_results_prob,
                                            val_classifications_path, np.shape(validation_matrix)[1])
-    test_classifications_path = f"{save_dir}Test/test_classified_{feature_type}_%s_{ccss}.txt"
+    test_classifications_path = f"{save_dir}Test/test_classified_unigram_%s_{ccss}.txt"
     com.saveFileLevelClassificationResults(congress, test_matrix_row_filenames, test_labels, test_classification_results_prob,
                                            test_classifications_path, np.shape(test_matrix)[1])
 
@@ -239,7 +197,11 @@ if __name__ == "__main__":
     #             ]:  LogisticModel(), NN20DModel(), NN20NDModel(), NN1000DModel(), NN1000NDModel(), MNNBModel(), KNNModel(),LDAModel(), RFCVModel(), BoostModel(), SVMModel() 
     # for m in [ RFCVModel(), BoostModel(), SVMModel()]: # LogisticModel(), NN20DModel(), NN20NDModel(), NN1000DModel(), NN1000NDModel(), MNNBModel(), KNNModel(), LDAModel(),
     ### for m in [LSTMDropModel(), LSTMDropBiDiModel(), LSTMBiDiModel(), NNMultiModel()]:
+<<<<<<< HEAD
     for m in [TransformerModel(), CNN2Model()]:
+=======
+    for m in [XGBoostModel(), LDAModel()]:
+>>>>>>> c826084 (feature importance 0)
     # for m in [CNN2Model(), LSTMDropBiDiModel(), LSTMDropModel()]: 
     # for m in [BoostModel()]: 
         #   LDAModel() LSTMDropModel(), LSTMDropBiDiModel(), , NNMultiModel() LSTMDropGloveModel(50), LSTMDropGloveModel(100)
@@ -250,19 +212,22 @@ if __name__ == "__main__":
             os.makedirs(save_dir + subdir, exist_ok=True)
         # for i_split in [ '100', '103', '106', '109', '112', '114']:  '097',
         # for style, style_w_count in [('max_balanced_0', 'max_balanced_0_1_1')]: #
-        for style, style_w_count in [('max_balanced_0', 'max_balanced_0_1_1')]: #
+        for style, style_w_count in [('bayram', 'bayram')]: #
+        # for style, style_w_count in [('3gram_max_balanced_0', '3gram_max_balanced_0_10_50')]: #
         # for style, style_w_count in [('max_balanced_0', 'max_balanced_0_3_7'), ('max_balanced_0', 'max_balanced_0_10_50')]: #
         # for style, style_w_count in [('bayram', 'bayram')]: #
         # for style in ['3gram_max_balanced_0', '2gram_max_balanced_0']: # '097',
             for chamber in ['House']:
-                for congress in ['097', '100',  '103', '106', '109', '112', '114']:
+                # for congress in [97, 100, 103, 106, 109, 112, 114]:
+                for congress in range(97, 115):
+                    fmt_congress = "%03d" % congress
                     np.random.seed(0)
                     tf.random.set_seed(0)
                     print(f"*** Running for {m.name()}, {congress} ***")
                     if not m.use_gpu():
                         with tf.device("/cpu:0"):
-                            run(save_dir, m, style, style_w_count, congress, chamber)
+                            run(save_dir, m, style, style_w_count, fmt_congress, chamber)
                     else:
-                        run(save_dir, m, style, style_w_count, congress, chamber)
+                        run(save_dir, m, style, style_w_count, fmt_congress, chamber)
 
         # print(( * df[df['split']=='test'])['dataset', 'accuracy'])

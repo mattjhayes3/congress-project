@@ -53,6 +53,9 @@ def rowNormalizeMatrix(matrix_):
 
     return matrix_2
 
+def applyLogNormalizationNoUnit(feature_matrix):
+    return np.sign(feature_matrix)*np.log( np.abs(feature_matrix) + 1 )
+
 def applyLogNormalization(feature_matrix):
     # assert np.allclose(np.abs(feature_matrix), feature_matrix)
     # our default scaling method is the conversion of feature values to log domain
