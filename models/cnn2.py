@@ -13,7 +13,7 @@ class CNN2Model(SequenceModel):
         self.embedding_size = 128
 
     def name(self):
-        return 'cnn2_128_7_e128_s1' if not self.instance_name else f"cnn2_128_7_e128_s1_{self.instance_name}"
+        return 'cnn2_128_7_e128_s1_d3_10' if not self.instance_name else f"cnn2_128_7_e128_s1_d3_10_{self.instance_name}"
 
     # inside, save the trained model to the corresponding folder - might be needed in the future
     def fit(self, training_matrix, training_labels, validation_matrix, validation_labels, dictionary):
@@ -31,13 +31,14 @@ class CNN2Model(SequenceModel):
         self.model = keras.models.Sequential([layers.Embedding(dictionary_size, self.embedding_size, input_length= np.shape(training_matrix)[1]),
                                             # layers.Dropout(0.10),
                                             layers.Conv1D(128, 7, padding="valid", activation="relu", strides=1),
+                                            layers.Dropout(0.1),
                                             layers.Conv1D(128, 7, padding="valid", activation="relu", strides=1),
-                                            # layers.Dropout(0.5),
+                                            layers.Dropout(0.1),
                                             # layers.Conv1D(128, 7, padding="valid", activation="relu", strides=1),
                                             layers.GlobalMaxPooling1D(),
                                             layers.Dense(128, activation="relu"),
                                             # layers.Dropout(0.50),
-                                            # layers.Dropout(0.2),
+                                            layers.Dropout(0.1),
                                             keras.layers.Dense(1, activation='sigmoid'),
                                             ])
 

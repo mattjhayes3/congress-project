@@ -239,7 +239,7 @@ if __name__ == "__main__":
     #             ]:  LogisticModel(), NN20DModel(), NN20NDModel(), NN1000DModel(), NN1000NDModel(), MNNBModel(), KNNModel(),LDAModel(), RFCVModel(), BoostModel(), SVMModel() 
     # for m in [ RFCVModel(), BoostModel(), SVMModel()]: # LogisticModel(), NN20DModel(), NN20NDModel(), NN1000DModel(), NN1000NDModel(), MNNBModel(), KNNModel(), LDAModel(),
     ### for m in [LSTMDropModel(), LSTMDropBiDiModel(), LSTMBiDiModel(), NNMultiModel()]:
-    for m in [TransformerModel()]:
+    for m in [TransformerModel(), CNN2Model()]:
     # for m in [CNN2Model(), LSTMDropBiDiModel(), LSTMDropModel()]: 
     # for m in [BoostModel()]: 
         #   LDAModel() LSTMDropModel(), LSTMDropBiDiModel(), , NNMultiModel() LSTMDropGloveModel(50), LSTMDropGloveModel(100)
@@ -250,7 +250,7 @@ if __name__ == "__main__":
             os.makedirs(save_dir + subdir, exist_ok=True)
         # for i_split in [ '100', '103', '106', '109', '112', '114']:  '097',
         # for style, style_w_count in [('max_balanced_0', 'max_balanced_0_1_1')]: #
-        for style, style_w_count in [('max_balanced_0', 'max_balanced_0')]: #
+        for style, style_w_count in [('max_balanced_0', 'max_balanced_0_1_1')]: #
         # for style, style_w_count in [('max_balanced_0', 'max_balanced_0_3_7'), ('max_balanced_0', 'max_balanced_0_10_50')]: #
         # for style, style_w_count in [('bayram', 'bayram')]: #
         # for style in ['3gram_max_balanced_0', '2gram_max_balanced_0']: # '097',
