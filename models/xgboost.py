@@ -32,5 +32,5 @@ class XGBoostModel(Model):
         if self.grid is None:
             self.model = xgb.XGBClassifier(n_jobs=-1)
         else:
-            self.model = xgb.XGBClassifier(n_jobs=-1, base_estimator=self.grid.best_params_['base_estimator'], n_estimators=self.grid.best_params_['n_estimators'])
+            self.model = xgb.XGBClassifier(n_jobs=-1, n_estimators=self.grid.best_params_['n_estimators'], max_depth=self.grid.best_params_['max_depth'])
         self.model.fit(training_matrix.toarray(), training_labels)

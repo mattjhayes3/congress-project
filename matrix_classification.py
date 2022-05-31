@@ -197,11 +197,7 @@ if __name__ == "__main__":
     #             ]:  LogisticModel(), NN20DModel(), NN20NDModel(), NN1000DModel(), NN1000NDModel(), MNNBModel(), KNNModel(),LDAModel(), RFCVModel(), BoostModel(), SVMModel() 
     # for m in [ RFCVModel(), BoostModel(), SVMModel()]: # LogisticModel(), NN20DModel(), NN20NDModel(), NN1000DModel(), NN1000NDModel(), MNNBModel(), KNNModel(), LDAModel(),
     ### for m in [LSTMDropModel(), LSTMDropBiDiModel(), LSTMBiDiModel(), NNMultiModel()]:
-<<<<<<< HEAD
-    for m in [TransformerModel(), CNN2Model()]:
-=======
     for m in [XGBoostModel(), LDAModel()]:
->>>>>>> c826084 (feature importance 0)
     # for m in [CNN2Model(), LSTMDropBiDiModel(), LSTMDropModel()]: 
     # for m in [BoostModel()]: 
         #   LDAModel() LSTMDropModel(), LSTMDropBiDiModel(), , NNMultiModel() LSTMDropGloveModel(50), LSTMDropGloveModel(100)
