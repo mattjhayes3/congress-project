@@ -8,6 +8,7 @@ from scipy import stats
 import time
 import pickle
 import json
+import os
 
 def loadEmbeddings(path):
     embeddings_index = {}
@@ -32,10 +33,10 @@ def separateGroupFiles(list_of_files):
         del list_of_files[list_of_files.index('')]
 
     for filename in list_of_files:
-
-        if 'd' in filename[0]:
+        base = os.path.basename(filename)
+        if 'd' in base[0]:
             d_list.append(filename)
-        elif 'r' in filename[0]:
+        elif 'r' in base[0]:
             r_list.append(filename)
         else:
             print('Skipping last - empty - line!')
@@ -55,6 +56,41 @@ def rowNormalizeMatrix(matrix_):
 
 def applyLogNormalizationNoUnit(feature_matrix):
     return np.sign(feature_matrix)*np.log( np.abs(feature_matrix) + 1 )
+
+def saveFeatureImportances(savefilename_, trained_model, dictionary):
+    rev_dict = {v: k for k, v in dictionary.items()}
+    ordered = sorted(list(rev_dict.items()))
+    # get the input-output layer weights
+    layer_weights = []
+    for layer in trained_model.layers:
+        layer_weights.append( layer.get_weights() ) # list of numpy arrays
+
+    #print(layer_weights[0][1][0])
+    #print(layer_weights[0][1][1])
+    #bias_ = layer_weights[0][1]
+    btw_input_hidden_weights = layer_weights[0][0] # don't ignore the bias array
+
+    #print(bias_)
+    diffs = []
+    with open(savefilename_, 'w') as f_importance:
+        for index, word in ordered:
+            curr_uni_weights = btw_input_hidden_weights[index]
+            f_importance.write(word + '\t' + str(curr_uni_weights[0]) + '\t' + str(curr_uni_weights[1]) +
+                                        '\t' + str(curr_uni_weights[0] - curr_uni_weights[1]) + '\n')
+            diffs.append((curr_uni_weights[0] - curr_uni_weights[1], word))
+
+    with open(savefilename_[:-4] + '_bias.txt', 'w') as f_importance:
+        f_importance.write(str(layer_weights[0][1][0]) + '\t' + str(layer_weights[0][1][1]))
+    
+    diffs.sort()
+    with open(savefilename_[:-4] + '_top_neg.txt', 'w') as f_importance:
+        for score, word in diffs[:30]:
+            f_importance.write(word + '\n')
+    diffs.reverse()
+    with open(savefilename_[:-4] + '_top_pos.txt', 'w') as f_importance:
+        for score, word in diffs[:30]:
+            f_importance.write(word + '\n')
+
 
 def applyLogNormalization(feature_matrix):
     # assert np.allclose(np.abs(feature_matrix), feature_matrix)

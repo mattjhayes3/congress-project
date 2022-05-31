@@ -5,7 +5,7 @@ import json
 
 # for fmt_congress in ['97', '100', '103', '106', '109']: #,
 # for fmt_congress in []: #,
-n_range = [1,2,3]
+n_range = [1,2]
 for style in ['max_balanced_0']:  # 'bayram'
     for chamber in ["House"]:  # "House", , "Senate"
         distinct_count_min = 10 
@@ -62,7 +62,7 @@ for style in ['max_balanced_0']:  # 'bayram'
                                 dictionary[token] = index
                                 index += 1
                     print(f"computed dictionary of size {len(dictionary)}")
-                    with open(f"matricies/dicts/{chamber}_{fmt_congress}_{out_style}.json", "w") as dict_file:
+                    with open(f"matricies/dicts/{chamber}_{fmt_congress}_{n}gram_{out_style}.json", "w") as dict_file:
                         json.dump(dictionary, dict_file)
                     stats = dict()
                     for token in dictionary.keys():
