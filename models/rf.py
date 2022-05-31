@@ -7,7 +7,6 @@ class RFModel(Model):
     def name(self):
         return 'rf' if not self.instance_name else f"rf_{self.instance_name}"
 
-    # inside, save the trained model to the corresponding folder - might be needed in the future
     def fit(self, training_matrix, training_labels, validation_matrix, validation_labels, dictionary):
         # print(f"type(training_matrix)={type(training_matrix)}, type(training_labels)={type(training_labels)}")
         # print(f"type(validation_matrix)={type(validation_matrix)}, type(validation_labels)={type(validation_labels)}")

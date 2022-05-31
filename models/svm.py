@@ -1,7 +1,7 @@
-# author: Ulya Bayram
+# original author: Ulya Bayram, adapted by: Matthew Hayes
 # Here are the used classification methods are defined as separate functions
 # calling them simply will provide necessary information for different feature types' classification in parallel
-# ulyabayram@gmail.com
+# ulyabayram@gmail.com, mattjhayes3@gmail.com
 from sklearn.svm import SVC
 from sklearn.experimental import enable_halving_search_cv
 from sklearn.model_selection import HalvingGridSearchCV
@@ -51,7 +51,6 @@ class SVMModel(Model):
     def fit(self, training_matrix, training_labels, validation_matrix, validation_labels, dictionary):
         training_matrix = sparse.csr_matrix(training_matrix)
         validation_matrix = sparse.csr_matrix(validation_matrix)
-        # first, define the classifier
         if self.grid is None:
             self.model = SVC(verbose=True, cache_size=6000, kernel='rbf', probability=False,
                             C=16, gamma='scale', shrinking=False)

@@ -1,7 +1,3 @@
-# author: Ulya Bayram
-# Here are the used classification methods are defined as separate functions
-# calling them simply will provide necessary information for different feature types' classification in parallel
-# ulyabayram@gmail.com
 import numpy as np
 import keras
 from .model import Model
@@ -21,7 +17,6 @@ class LogisticSigModel(Model):
 
         num_features = np.shape(training_matrix)[1]
 
-        # define the early stopping criteria
         es = keras.callbacks.EarlyStopping(monitor='val_accuracy', min_delta=0, patience=100, verbose=0, mode='auto', restore_best_weights=True) # 100
         # with tf.Session() as sess:
         # self.
@@ -35,7 +30,6 @@ class LogisticSigModel(Model):
                                         #keras.layers.Dense(2, activation='softmax')
                                         ])
 
-        # with sgd optimizer, the result was 0.74, i just replaced it with adam and got 0.88 - the highest performance so far
         # self.
         self.model.compile(optimizer='adam', loss='binary_crossentropy',
                             metrics=['binary_crossentropy', 'accuracy'])

@@ -1,8 +1,3 @@
-# Automatically select 6000 data from the set, half d half r
-# read the selected ones, extract the unigrams and save to its folder
-# then extract the sentences and save to another folder
-# while at it, randomly divide the set into training and test
-
 import glob
 import os
 import re

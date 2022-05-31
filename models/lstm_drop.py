@@ -3,6 +3,9 @@ import keras
 import keras.layers as layers
 # from common_fns import *
 from .model import SequenceModel 
+import tensorflow as tf
+import os
+import shutil
 
 class LSTMDropModel(SequenceModel):
     def use_gpu(self):
@@ -42,6 +45,10 @@ class LSTMDropModel(SequenceModel):
         # with sgd optimizer, the result was 0.74, i just replaced it with adam and got 0.88 - the highest performance so far
         self.model.compile(optimizer='adam', loss='binary_crossentropy',
                         metrics=['binary_crossentropy', 'accuracy'])
+        logdir = f"./logs/{self.name()}"
+        shutil.rmtree(logdir, ignore_errors=True)
+        os.makedirs(logdir)
+        tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=logdir)
         self.model.fit(training_matrix, training_labels, epochs=200, batch_size=128,
-                    validation_data=(validation_matrix, validation_labels), callbacks=[es])
+                    validation_data=(validation_matrix, validation_labels), callbacks=[es, tensorboard_callback])
 

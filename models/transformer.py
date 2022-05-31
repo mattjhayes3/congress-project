@@ -74,7 +74,6 @@ class TransformerModel(SequenceModel):
     def name(self):
         return 'transformer_2_2' if not self.instance_name else f"transformer_2_2_{self.instance_name}"
 
-    # inside, save the trained model to the corresponding folder - might be needed in the future
     def fit(self, training_matrix, training_labels, validation_matrix, validation_labels, dictionary):
 
         training_matrix = training_matrix.toarray()
@@ -85,7 +84,6 @@ class TransformerModel(SequenceModel):
 
         validation_matrix = validation_matrix.toarray()
 
-        # define the early stopping criteria
         es = keras.callbacks.EarlyStopping(monitor='val_accuracy', min_delta=0, patience=10, verbose=0, mode='auto', restore_best_weights=True)
         self.model = keras.models.Sequential([
             TokenAndPositionEmbedding(np.shape(training_matrix)[1], dictionary_size, self.embedding_size),

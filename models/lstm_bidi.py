@@ -3,6 +3,9 @@ import keras
 from tensorflow.keras import layers
 # from common_fns import *
 from .model import SequenceModel 
+import os
+import shutil
+import tensorflow as tf
 
 class LSTMBiDiModel(SequenceModel):
     def use_gpu(self):
@@ -15,7 +18,6 @@ class LSTMBiDiModel(SequenceModel):
     def name(self):
         return 'lstm2_bidi_128' if not self.instance_name else f"lstm2_bidi_128_{self.instance_name}"
 
-    # inside, save the trained model to the corresponding folder - might be needed in the future
     def fit(self, training_matrix, training_labels, validation_matrix, validation_labels, dictionary):
 
         training_matrix = training_matrix.toarray()
@@ -26,7 +28,6 @@ class LSTMBiDiModel(SequenceModel):
 
         validation_matrix = validation_matrix.toarray()
 
-        # define the early stopping criteria
         es = keras.callbacks.EarlyStopping(monitor='val_accuracy', min_delta=0, patience=5, verbose=0, mode='auto', restore_best_weights=True)
         self.model = keras.models.Sequential([layers.Embedding(dictionary_size, self.embedding_size, input_length= np.shape(training_matrix)[1]),
                                             # layers.Dropout(0.5),
@@ -39,9 +40,12 @@ class LSTMBiDiModel(SequenceModel):
                                             # keras.layers.Dense(2, activation='softmax'),
                                             ])
 
-        # with sgd optimizer, the result was 0.74, i just replaced it with adam and got 0.88 - the highest performance so far
+        logdir = f"./logs/{self.name()}"
+        shutil.rmtree(logdir, ignore_errors=True)
+        os.makedirs(logdir)
+        tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=logdir)
         self.model.compile(optimizer='adam', loss='binary_crossentropy',
                         metrics=['binary_crossentropy', 'accuracy'])
         self.model.fit(training_matrix, training_labels, epochs=200, batch_size=128,
-                    validation_data=(validation_matrix, validation_labels), callbacks=[es])
+                    validation_data=(validation_matrix, validation_labels), callbacks=[es, tensorboard_callback])
 

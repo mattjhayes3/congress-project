@@ -1,6 +1,3 @@
-# author: Ulya Bayram
-# purpose is to download all 114th Congress data
-# later I'll eliminate the non-senate data
 import os
 import json
 import pandas as pd

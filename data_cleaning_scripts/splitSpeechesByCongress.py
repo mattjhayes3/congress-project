@@ -1,6 +1,5 @@
-# author: Ulya Bayram
-# purpose is to download all 114th Congress data
-# later I'll eliminate the non-senate data
+# original author: Ulya Bayram, adapted by: Matthew Hayes
+# Joins speaker info and speeches, writes files for each speech
 import os
 
 def correctText(speech_text):

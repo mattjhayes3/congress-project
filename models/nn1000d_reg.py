@@ -1,13 +1,11 @@
-# author: Ulya Bayram
-# Here are the used classification methods are defined as separate functions
-# calling them simply will provide necessary information for different feature types' classification in parallel
-# ulyabayram@gmail.com
 import numpy as np
 import keras
 # from common_fns import *
 from .model import Model
 from tensorflow.keras import regularizers
-
+import tensorflow as tf
+import os
+import shutil
 
 class NN1000DRegModel(Model):
     def use_gpu(self):
@@ -16,7 +14,6 @@ class NN1000DRegModel(Model):
     def name(self):
         return 'nn1000hd_reg' if not self.instance_name else f"nn1000hd_reg_{self.instance_name}"
 
-    # inside, save the trained model to the corresponding folder - might be needed in the future
     def fit(self, training_matrix, training_labels, validation_matrix, validation_labels, dictionary):
 
         training_matrix = training_matrix.toarray()
@@ -36,9 +33,12 @@ class NN1000DRegModel(Model):
                                             keras.layers.Dense(2, activation='softmax')
                                             ])
 
-        # with sgd optimizer, the result was 0.74, i just replaced it with adam and got 0.88 - the highest performance so far
         self.model.compile(optimizer='adam', loss='sparse_categorical_crossentropy',
                         metrics=['sparse_categorical_crossentropy', 'accuracy'])
+        logdir = f"./logs/{self.name()}"
+        shutil.rmtree(logdir, ignore_errors=True)
+        os.makedirs(logdir)
+        tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=logdir)
         self.model.fit(training_matrix, training_labels, epochs=200, batch_size=64,
                     validation_data=(validation_matrix, validation_labels), callbacks=[es])
 

@@ -1,7 +1,3 @@
-# author: Ulya Bayram
-# Here are the used classification methods are defined as separate functions
-# calling them simply will provide necessary information for different feature types' classification in parallel
-# ulyabayram@gmail.com
 import numpy as np
 import keras
 # from common_fns import *
@@ -21,7 +17,6 @@ def LogisticRegModel(Model):
 
         num_features = np.shape(training_matrix)[1]
 
-        # define the early stopping criteria
         es = keras.callbacks.EarlyStopping(monitor='val_accuracy', min_delta=0, patience=100, verbose=0, mode='auto', restore_best_weights=True)
         # with tf.Session() as sess:
         self.model = keras.models.Sequential([ # feed forward NN with a single hidden layer
@@ -35,7 +30,6 @@ def LogisticRegModel(Model):
                                         #keras.layers.Dense(2, activation='softmax')
                                         ])
 
-        # with sgd optimizer, the result was 0.74, i just replaced it with adam and got 0.88 - the highest performance so far
         self.model.compile(optimizer='adam', loss='sparse_categorical_crossentropy',
                             metrics=['sparse_categorical_crossentropy', 'accuracy'])
         self.model.fit(training_matrix, training_labels, epochs=200, batch_size=10,
