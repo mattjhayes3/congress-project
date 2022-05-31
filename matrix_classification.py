@@ -197,8 +197,8 @@ if __name__ == "__main__":
     #             ]:  LogisticModel(), NN20DModel(), NN20NDModel(), NN1000DModel(), NN1000NDModel(), MNNBModel(), KNNModel(),LDAModel(), RFCVModel(), BoostModel(), SVMModel() 
     # for m in [ RFCVModel(), BoostModel(), SVMModel()]: # LogisticModel(), NN20DModel(), NN20NDModel(), NN1000DModel(), NN1000NDModel(), MNNBModel(), KNNModel(), LDAModel(),
     ### for m in [LSTMDropModel(), LSTMDropBiDiModel(), LSTMBiDiModel(), NNMultiModel()]:
-    for m in [XGBoostModel(), LDAModel()]:
-    # for m in [CNN2Model(), LSTMDropBiDiModel(), LSTMDropModel()]: 
+    # for m in [XGBoostModel(), LDAModel()]:
+    for m in [TransformerModel(), CNN2Model(), LSTMDropBiDiModel()]: 
     # for m in [BoostModel()]: 
         #   LDAModel() LSTMDropModel(), LSTMDropBiDiModel(), , NNMultiModel() LSTMDropGloveModel(50), LSTMDropGloveModel(100)
          # , LSTMModel(), LogisticModel(), NN20DModel(), NN20NDModel(), NN1000DModel(), NN1000NDModel(), SVMModel(), MNNBModel(), KNNModel(), LDAModel(), RFCVModel(), BoostModel()]:  
@@ -207,8 +207,8 @@ if __name__ == "__main__":
         for subdir in ["", "models/", "Training/", "Validation/", "Test/"]:
             os.makedirs(save_dir + subdir, exist_ok=True)
         # for i_split in [ '100', '103', '106', '109', '112', '114']:  '097',
-        # for style, style_w_count in [('max_balanced_0', 'max_balanced_0_1_1')]: #
-        for style, style_w_count in [('bayram', 'bayram')]: #
+        for style, style_w_count in [('max_balanced_0', 'max_balanced_0_1_1')]: #
+        # for style, style_w_count in [('bayram', 'bayram')]: #
         # for style, style_w_count in [('3gram_max_balanced_0', '3gram_max_balanced_0_10_50')]: #
         # for style, style_w_count in [('max_balanced_0', 'max_balanced_0_3_7'), ('max_balanced_0', 'max_balanced_0_10_50')]: #
         # for style, style_w_count in [('bayram', 'bayram')]: #

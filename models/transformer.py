@@ -72,7 +72,7 @@ class TransformerModel(SequenceModel):
         self.embedding_size = 128
 
     def name(self):
-        return 'transformer_2_2' if not self.instance_name else f"transformer_2_2_{self.instance_name}"
+        return 'transformer_2_d3_20' if not self.instance_name else f"transformer_2_d3_20_{self.instance_name}"
 
     def fit(self, training_matrix, training_labels, validation_matrix, validation_labels, dictionary):
 
@@ -87,15 +87,15 @@ class TransformerModel(SequenceModel):
         es = keras.callbacks.EarlyStopping(monitor='val_accuracy', min_delta=0, patience=10, verbose=0, mode='auto', restore_best_weights=True)
         self.model = keras.models.Sequential([
             TokenAndPositionEmbedding(np.shape(training_matrix)[1], dictionary_size, self.embedding_size),
-            TransformerBlock(self.embedding_size, 2, 128),
+            TransformerBlock(self.embedding_size, 2, 128, rate=0.2),
                                             layers.GlobalAveragePooling1D(),
-                                            layers.Dropout(0.1),
+                                            layers.Dropout(0.2),
                                             # layers.Dropout(0.5),
                                             # layers.Conv1D(128, 7, padding="valid", activation="relu", strides=1),
                                             # layers.GlobalMaxPooling1D(),
                                             layers.Dense(64, activation="relu"),
                                             # layers.Dropout(0.50),
-                                            # layers.Dropout(0.2),
+                                            layers.Dropout(0.2),
                                             keras.layers.Dense(1, activation='sigmoid'),
                                             ])
 
