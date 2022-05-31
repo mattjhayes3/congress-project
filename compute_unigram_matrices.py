@@ -5,7 +5,7 @@ from scipy import sparse
 
 # for fmt_congress in ['97', '100', '103', '106', '109']: #, 
 # for fmt_congress in []: #, 
-for style in ['max_balanced_0']: # '' 'bayram'
+for style in ['max_balanced_0', 'small_0']: # '' 'bayram'
 	for chamber in [ "House", "Senate" ]: # "House", "Senate"
 		distinct_count_min = 10
 		absolute_count_min = 50

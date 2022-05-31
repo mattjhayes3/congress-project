@@ -100,6 +100,9 @@ def run(save_dir, m, style, style_w_count, congresses, chamber):
     training_matrix = matrices['train']
     validation_matrix = matrices['validation']
     test_matrix = matrices['test']
+    print(f"training_matrix.shape={training_matrix.shape}")
+    print(f"validation_matrix.shape={validation_matrix.shape}")
+    print(f"test_matrix.shape={test_matrix.shape}")
     dictionary = dict()
     if m.is_sequence():
         print(f"reading from matricies/dicts/{ccss}_sequence.json")
@@ -123,6 +126,9 @@ def run(save_dir, m, style, style_w_count, congresses, chamber):
     training_row_filenames = row_filenames['train']
     validation_row_filenames = row_filenames['validation']
     test_matrix_row_filenames = row_filenames['test']
+    print(f"len(validation_row_filenames)={len(validation_row_filenames)}")
+    print(f"len(training_row_filenames)={len(training_row_filenames)}")
+    print(f"len(test_matrix_row_filenames)={len(test_matrix_row_filenames)}")
 
     # some classifiers might have some parameter selection (classifier model building) requirement
     # if so, do it here, now - and use the selected parameters
@@ -157,23 +163,23 @@ def run(save_dir, m, style, style_w_count, congresses, chamber):
 
     # save the file level feature vector classification results
     train_classifications_path = f"{save_dir}Training/training_classified_unigram_%s_{ccss}.txt"
-    com.saveFileLevelClassificationResults(congress, training_row_filenames, training_labels, training_classification_results_prob,
-                                           train_classifications_path, np.shape(training_matrix)[1])
+    com.saveFileLevelClassificationResults(congresses, training_row_filenames, training_labels, training_classification_results_prob,
+                                           train_classifications_path, np.shape(training_matrix)[1], save_details=False)
     val_classifications_path = f"{save_dir}Validation/validation_classified_unigram_%s_{ccss}.txt"
-    com.saveFileLevelClassificationResults(congress, validation_row_filenames, validation_labels, validation_classification_results_prob,
-                                           val_classifications_path, np.shape(validation_matrix)[1])
+    com.saveFileLevelClassificationResults(congresses, validation_row_filenames, validation_labels, validation_classification_results_prob,
+                                           val_classifications_path, np.shape(validation_matrix)[1], save_details=False)
     test_classifications_path = f"{save_dir}Test/test_classified_unigram_%s_{ccss}.txt"
-    com.saveFileLevelClassificationResults(congress, test_matrix_row_filenames, test_labels, test_classification_results_prob,
-                                           test_classifications_path, np.shape(test_matrix)[1])
+    com.saveFileLevelClassificationResults(congresses, test_matrix_row_filenames, test_labels, test_classification_results_prob,
+                                           test_classifications_path, np.shape(test_matrix)[1], save_details=False)
 
     # save the overall, split level results for the validation, test, and shor sets
-    com.saveSplitStats(save_dir, m.name(), congress, chamber, styles,  "train",
+    com.saveSplitStats(save_dir, m.name(), congresses, chamber, styles,  "train",
                        training_classification_results_prob, training_labels)
     # com.saveSplitStats(save_dir, cf.name(), i_split, "validation", validation_classification_results_prob, validation_labels)
-    com.saveSplitStats(save_dir, m.name(), congress, chamber, styles,  "valid",
+    com.saveSplitStats(save_dir, m.name(), congresses, chamber, styles,  "valid",
                        validation_classification_results_prob, validation_labels)
     test_stats = com.saveSplitStats(save_dir, m.name(
-    ), congress, chamber, styles, "test", test_classification_results_prob, test_labels)
+    ), congresses, chamber, styles, "test", test_classification_results_prob, test_labels)
     print(f"test accuracy {test_stats['accuracy']}")
 
 # i stand in opposition to the republican affordable care repeal act because it is an irresponsible approach that does nothing to address the rising cost of health care that our families and our businesses are facing today * it is a fact that the __oov__ cost for most unitedstates companies is health care * without the affordable care act overall health care costs will continue to rise even faster costs that will be borne by both the public and private sector * it is important to note that voting for this repeal bill will eliminate the small business health care tax credit * this tax credit currently allows small businesses to offset up to 35 percent of their health care insurance cost * starting in 2014 the credit will increase to 50 percent of premium co
@@ -215,6 +221,7 @@ if __name__ == "__main__":
         # for style, style_w_count in [('bayram', 'bayram')]: #
         # for style in ['3gram_max_balanced_0', '2gram_max_balanced_0']: # '097',
             for chamber in ['House']:
+                # congresses = "97_114"
                 congresses = "97_114"
                 # for congress in range(97, 115):
                 np.random.seed(0)

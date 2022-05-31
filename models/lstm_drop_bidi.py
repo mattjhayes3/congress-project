@@ -30,7 +30,7 @@ class LSTMDropBiDiModel(SequenceModel):
         validation_matrix = validation_matrix.toarray()
 
         # define the early stopping criteria
-        es = keras.callbacks.EarlyStopping(monitor='val_accuracy', min_delta=0, patience=35, verbose=0, mode='auto', restore_best_weights=True)
+        es = keras.callbacks.EarlyStopping(monitor='val_accuracy', min_delta=0, patience=15, verbose=0, mode='auto', restore_best_weights=True)
         self.model = keras.models.Sequential([layers.Embedding(dictionary_size, self.embedding_size, input_length= np.shape(training_matrix)[1]),
                                             layers.Dropout(0.75),
                                             # layers.LSTM(128, dropout=0.75, return_sequences=True),

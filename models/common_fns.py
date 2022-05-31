@@ -203,7 +203,7 @@ def splitFeatureMatrix(feature_matrix, feature_filenames, training_dem_files, tr
     return matrices, labels, row_filenames
 
 def saveFileLevelClassificationResults(congress, input_files, true_labels, predicted_probs,
-                                  save_path_pattern, input_numfeatures):
+                                  save_path_pattern, input_numfeatures, save_details=True):
     f_results_save_path = save_path_pattern % "matrix_reuslts"
     by_length_path = save_path_pattern % "by_length"
     top_path = save_path_pattern % "top"
@@ -224,52 +224,54 @@ def saveFileLevelClassificationResults(congress, input_files, true_labels, predi
                 predicted_probs = predicted_probs[:, 0]
 
         for file_ in input_files:
-            with open(f"../processed_data/House{congress}_unigrams/{file_}") as fo:
-                content = fo.read().splitlines()[0]
-            length = len(content.split())
-            predicted_pr = float(predicted_probs[ic])
-            prediction = 1 if predicted_pr >= 0.5 else 0
-            true_label = int(true_labels[ic])
-            correct = prediction==true_label
-            unsure_list.append((abs(predicted_pr-0.5), predicted_pr,  true_label, content))
-            if correct:
-                correct_list.append((abs(predicted_pr-true_label), predicted_pr,  true_label, content))
-            else:
-                incorrect_list.append((abs(predicted_pr-true_label), predicted_pr, true_label, content))
-            if length < 150:
-                length_counts["<150"]+=1
-                length_correct["<150"]+= int(correct)
-            if length < 300:
-                length_counts["<300"]+=1
-                length_correct["<300"]+= int(correct)
-            elif length < 500:
-                length_counts["<500"]+= 1
-                length_correct["<500"]+= int(correct)
-            elif length < 1000:
-                length_counts["<1000"]+= 1
-                length_correct["<1000"]+= int(correct)
-            elif length < 2000:
-                length_counts["<2000"]+= 1
-                length_correct["<2000"]+= int(correct)
-            else:
-                length_counts["2k+"]+= 1
-                length_correct["2k+"]+= int(correct)
+            if save_details:
+                with open(f"../processed_data/House{congress}_unigrams/{file_}") as fo:
+                    content = fo.read().splitlines()[0]
+                length = len(content.split())
+                predicted_pr = float(predicted_probs[ic])
+                prediction = 1 if predicted_pr >= 0.5 else 0
+                true_label = int(true_labels[ic])
+                correct = prediction==true_label
+                unsure_list.append((abs(predicted_pr-0.5), predicted_pr,  true_label, content))
+                if correct:
+                    correct_list.append((abs(predicted_pr-true_label), predicted_pr,  true_label, content))
+                else:
+                    incorrect_list.append((abs(predicted_pr-true_label), predicted_pr, true_label, content))
+                if length < 150:
+                    length_counts["<150"]+=1
+                    length_correct["<150"]+= int(correct)
+                if length < 300:
+                    length_counts["<300"]+=1
+                    length_correct["<300"]+= int(correct)
+                elif length < 500:
+                    length_counts["<500"]+= 1
+                    length_correct["<500"]+= int(correct)
+                elif length < 1000:
+                    length_counts["<1000"]+= 1
+                    length_correct["<1000"]+= int(correct)
+                elif length < 2000:
+                    length_counts["<2000"]+= 1
+                    length_correct["<2000"]+= int(correct)
+                else:
+                    length_counts["2k+"]+= 1
+                    length_correct["2k+"]+= int(correct)
             # 'filename\tsplitnum\ttrueclass\tewd_result\tpredclass_prob\tnumfeatures\n'
             # 'filename\tsplitnum\ttrueclass\tpredclass_prob\tnumfeatures\n'
             f_results_save_input.write(file_ + '\t' + str(true_labels[ic]) +
                                            '\t' + str(predicted_probs[ic]) + '\t' + str(input_numfeatures) + '\n')
             ic += 1
-        length_acc = {k:(v/length_counts[k] if length_counts[k]>0 else "N/A") for k,v in length_correct.items()}
-        with open(by_length_path, "w") as lo:
-            json.dump(length_acc, lo)
-        correct_list.sort()
-        incorrect_list.sort(reverse=True)
-        unsure_list.sort()
-        top_correct = correct_list[:min(len(correct_list), 10)]
-        top_incorrect = incorrect_list[:min(len(incorrect_list), 10)]
-        top_unsure = unsure_list[:min(len(unsure_list), 10)]
-        with open(top_path, "w") as lo:
-            json.dump({'top_correct':top_correct, 'top_incorrect':top_incorrect, 'top_unsure': top_unsure}, lo)
+        if save_details:
+            length_acc = {k:(v/length_counts[k] if length_counts[k]>0 else "N/A") for k,v in length_correct.items()}
+            with open(by_length_path, "w") as lo:
+                json.dump(length_acc, lo)
+            correct_list.sort()
+            incorrect_list.sort(reverse=True)
+            unsure_list.sort()
+            top_correct = correct_list[:min(len(correct_list), 10)]
+            top_incorrect = incorrect_list[:min(len(incorrect_list), 10)]
+            top_unsure = unsure_list[:min(len(unsure_list), 10)]
+            with open(top_path, "w") as lo:
+                json.dump({'top_correct':top_correct, 'top_incorrect':top_incorrect, 'top_unsure': top_unsure}, lo)
 
 
 

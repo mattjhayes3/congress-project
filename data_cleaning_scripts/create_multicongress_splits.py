@@ -14,7 +14,7 @@ if __name__ == "__main__":
     processed_dir = f'../../{processed_dir_no_dots}'
     bayram_congresses = [97, 100, 103, 106, 109, 112, 114]
     # selected_congresses = [97, 100, 103, 106, 109, 112, 114]#range(43, 115)
-    selected_congresses = range(97, 115)  # [100]
+    selected_congresses = range(114, 115)  # [100]
     all_files = []
     selected_test_files = []
     selected_train_files = []
@@ -115,7 +115,7 @@ if __name__ == "__main__":
 
             # print(f"selected_valid_files_rep={len(selected_valid_files_rep)}, selected_valid_files_dem={len(selected_valid_files_rep)}, selected_train_files_rep={len(selected_train_files_rep)}, selected_train_files_dem={len(selected_train_files_dem)}, selected_test_files_dem={len(selected_test_files_dem)}, selected_test_files_rep={len(selected_test_files_rep)}")
 
-    dataset = f"House97_114_{style}"
+    dataset = f"House114_114_{style}"
     fo_train = open(f'../splits/{dataset}_{seed}_train.txt', 'w')
     fo_test = open(f'../splits/{dataset}_{seed}_test.txt', 'w')
     fo_valid = open(f'../splits/{dataset}_{seed}_valid.txt', 'w')

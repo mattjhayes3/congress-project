@@ -10,6 +10,11 @@ absolute_count_min = 50
 for style in ['small_0', 'max_balanced_0']: # '' 'bayram'
 	for chamber in [ "House", ]: # "House", "Senate"
 		row_files = []
+		lengths = []
+		absolute_counts = dict()
+		number_of_speeches = dict()
+		dictionary = dict()
+		congresses = "97_114"
 		for split in ["train", "test", "valid"]:
 			out_style = f'{style}_{distinct_count_min}_{absolute_count_min}'
 			# a = list(range(44, 42, -1)) # 97, 43
@@ -22,11 +27,7 @@ for style in ['small_0', 'max_balanced_0']: # '' 'bayram'
 			# 	continue
 			# fmt_congress = "%03d" % congress
 			# print(f'Processsing {chamber} {fmt_congress}')
-			lengths = []
-			absolute_counts = dict()
-			number_of_speeches = dict()
-			dictionary = dict()
-			congresses = "97_114"
+
 			# for split in ["train", "test", "validation"]:
 			# with open(f"splits/{split}{fmt_congress}.txt") as f:
 			with open(f"splits/{chamber}{congresses}_{style}_{split}.txt") as f:

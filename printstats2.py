@@ -25,9 +25,10 @@ if __name__ == "__main__":
         stat['source'] = file
         stat['model'] = stat['model'].replace('models.', '') + "_"+ fname
         stat['model'] = stat['model'].replace('models', 'm_').replace('results', 'r_')
-        dset_suffix = stat['dataset'][4:]
-        stat['dataset'] = stat['dataset'][:4]
-        stat['model'] = f"{stat['model']}_{dset_suffix}"
+        if not "congress" in stat or len(stat['congress'])==3:
+            dset_suffix = stat['dataset'][4:]
+            stat['dataset'] = stat['dataset'][:4]
+            stat['model'] = f"{stat['model']}_{dset_suffix}"
         if "_House_" in file:
             stat['model'] = f"{stat['model']}_new"
         assert not "old" in stat['model'], f
