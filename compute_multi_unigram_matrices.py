@@ -7,8 +7,9 @@ from scipy import sparse
 # for fmt_congress in []: #, 
 distinct_count_min = 10
 absolute_count_min = 50
-for style in ['max_balanced_0', 'small_0']: # '' 'bayram'
+for style in ['small_0', 'max_balanced_0']: # '' 'bayram'
 	for chamber in [ "House", ]: # "House", "Senate"
+		row_files = []
 		for split in ["train", "test", "valid"]:
 			out_style = f'{style}_{distinct_count_min}_{absolute_count_min}'
 			# a = list(range(44, 42, -1)) # 97, 43
@@ -64,19 +65,20 @@ for style in ['max_balanced_0', 'small_0']: # '' 'bayram'
 				# rev_dict = {v:k for k,v in dictionary.items()}
 				# with open("dict.pkl", "wb") as dict_file:
 				# 	pickle.dump(dictionary, dict_file)
-			result = np.zeros((len(paths), len(dictionary)))
-			for (i, path) in enumerate(paths):
-				with open(f"../processed_data/{chamber}{congresses}_unigrams/{path}") as f:
-					lines = f.readlines()
-					assert len(lines) > 0, f"empty file! {f}"
-					speech = lines[0].split()
-				for word in speech:
-					if word in dictionary:
-						result[i, dictionary[word]] += 1
-			# np.savetxt(
-			# sparse.save_npz(f"matricies/{chamber}_{fmt_congress}_max_balanced_0_matrix.txt", sparse.csr_matrix(result))
-			sparse.save_npz(f"matricies/{chamber}_{congresses}_{out_style}_matrix.txt", sparse.csr_matrix(result))
-			with open(f"matricies/{chamber}_{congresses}_{out_style}_row_files.txt", 'w') as f:
-				for path in paths:
-					f.write("%s"%path)
+			row_files += paths
+		result = np.zeros((len(row_files), len(dictionary)))
+		for (i, path) in enumerate(row_files):
+			with open(f"../{path}") as f:
+				lines = f.readlines()
+				assert len(lines) > 0, f"empty file! {f}"
+				speech = lines[0].split()
+			for word in speech:
+				if word in dictionary:
+					result[i, dictionary[word]] += 1
+		# np.savetxt(
+		# sparse.save_npz(f"matricies/{chamber}_{fmt_congress}_max_balanced_0_matrix.txt", sparse.csr_matrix(result))
+		sparse.save_npz(f"matricies/{chamber}_{congresses}_{out_style}_matrix.txt", sparse.csr_matrix(result))
+		with open(f"matricies/{chamber}_{congresses}_{out_style}_row_files.txt", 'w') as f:
+			for path in row_files:
+				f.write("%s\n"%path)
 

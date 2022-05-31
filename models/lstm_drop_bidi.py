@@ -48,6 +48,7 @@ class LSTMDropBiDiModel(SequenceModel):
         logdir = f"./logs/{self.name()}"
         shutil.rmtree(logdir, ignore_errors=True)
         os.makedirs(logdir)
+        tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=logdir)
         self.model.fit(training_matrix, training_labels, epochs=200, batch_size=128,
                     validation_data=(validation_matrix, validation_labels), callbacks=[es,tensorboard_callback])
 
