@@ -215,7 +215,11 @@ if __name__ == "__main__":
         # for style in ['3gram_max_balanced_0', '2gram_max_balanced_0']: # '097',
             for chamber in ['House']:
                 for congress in [97, 100, 103, 106, 109, 112, 114]:
+<<<<<<< Updated upstream
                 # for congress in range(97, 115):
+=======
+                    # for congress in range(97, 115):
+>>>>>>> Stashed changes
                     fmt_congress = "%03d" % congress
                     np.random.seed(0)
                     tf.random.set_seed(0)
