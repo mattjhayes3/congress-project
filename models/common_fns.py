@@ -45,13 +45,9 @@ def separateGroupFiles(list_of_files):
 
 def rowNormalizeMatrix(matrix_):
     row_wise_sqrts = np.sqrt(np.sum(np.square(matrix_), axis=1))
+    nonzero_rows = row_wise_sqrts != 0
     matrix_2 = np.copy(matrix_)
-
-    # now divide each row items with the corresponding square root values
-    for i_row in range(np.shape(matrix_2)[0]):
-        if row_wise_sqrts[i_row] != 0:
-            matrix_2[i_row, :] = matrix_2[i_row, :] / row_wise_sqrts[i_row]
-
+    matrix_2[nonzero_rows, :] = matrix_2[nonzero_rows, :] / row_wise_sqrts[nonzero_rows, np.newaxis]
     return matrix_2
 
 def applyLogNormalizationNoUnit(feature_matrix):

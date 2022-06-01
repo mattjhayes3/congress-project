@@ -29,7 +29,7 @@ class CNN2Model(SequenceModel):
         # define the early stopping criteria
         es = keras.callbacks.EarlyStopping(monitor='val_accuracy', min_delta=0, patience=15, verbose=0, mode='auto', restore_best_weights=True)
         self.model = keras.models.Sequential([layers.Embedding(dictionary_size, self.embedding_size, input_length= np.shape(training_matrix)[1]),
-                                            layers.Dropout(0.5),
+                                            # layers.Dropout(0.5),
                                             layers.Conv1D(128, 7, padding="valid", activation="relu", strides=1),
                                             layers.Dropout(0.5),
                                             layers.Conv1D(128, 7, padding="valid", activation="relu", strides=1),
