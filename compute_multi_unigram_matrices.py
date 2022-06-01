@@ -7,7 +7,7 @@ from scipy import sparse
 # for fmt_congress in []: #, 
 distinct_count_min = 10
 absolute_count_min = 50
-for style in ['small_0', 'max_balanced_0']: # '' 'bayram'
+for style in [ 'max_balanced_0']: # '' 'bayram'
 	for chamber in [ "House", ]: # "House", "Senate"
 		row_files = []
 		lengths = []

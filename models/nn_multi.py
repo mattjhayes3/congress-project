@@ -27,10 +27,10 @@ class NNMultiModel(Model):
         self.model = keras.models.Sequential([
                                             keras.layers.Dense(2048, input_dim=num_features, activation='tanh'),
                                             # keras.layers.Dropout(0.15),
-                                            keras.layers.Dropout(0.5),
+                                            keras.layers.Dropout(0.95),
                                             keras.layers.Dense(256, input_dim=num_features, activation='tanh'),
                                             # keras.layers.Dropout(0.15),
-                                            keras.layers.Dropout(0.5),
+                                            keras.layers.Dropout(0.95),
                                             # keras.layers.Dense(40, input_dim=num_features, activation='relu'),
                                             # keras.layers.Dropout(0.15),
                                             # keras.layers.Dropout(0.5),
