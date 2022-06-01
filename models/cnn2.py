@@ -13,7 +13,7 @@ class CNN2Model(SequenceModel):
         self.embedding_size = 128
 
     def name(self):
-        return 'cnn2_128_7_e128_s1_d4_50' if not self.instance_name else f"cnn2_128_7_e128_s1_d4_50_{self.instance_name}"
+        return 'cnn2_128_7_e128_s1_d3_50' if not self.instance_name else f"cnn2_128_7_e128_s1_d3_50_{self.instance_name}"
 
     # inside, save the trained model to the corresponding folder - might be needed in the future
     def fit(self, training_matrix, training_labels, validation_matrix, validation_labels, dictionary):

@@ -90,13 +90,13 @@ class TransformerModel(SequenceModel):
             TokenAndPositionEmbedding(np.shape(training_matrix)[1], dictionary_size, self.embedding_size),
             TransformerBlock(self.embedding_size, 2, self.t_size, rate=0.1),
                                             layers.GlobalAveragePooling1D(),
-                                            layers.Dropout(0.1),
+                                            #layers.Dropout(0.1),
                                             # layers.Dropout(0.5),
                                             # layers.Conv1D(128, 7, padding="valid", activation="relu", strides=1),
                                             # layers.GlobalMaxPooling1D(),
                                             layers.Dense(self.t_size/2, activation="relu"),
                                             # layers.Dropout(0.50),
-                                            layers.Dropout(0.1),
+                                            # layers.Dropout(0.1),
                                             keras.layers.Dense(1, activation='sigmoid'),
                                             ])
 
