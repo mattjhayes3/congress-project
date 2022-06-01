@@ -102,6 +102,9 @@ def run(save_dir, m, style, style_w_count, congress, chamber):
     training_matrix = matrices['train']
     validation_matrix = matrices['validation']
     test_matrix = matrices['test']
+    print(f"training_matrix.shape={training_matrix.shape}")
+    print(f"validation_matrix.shape={validation_matrix.shape}")
+    print(f"test_matrix.shape={test_matrix.shape}")
     dictionary = dict()
     if m.is_sequence():
         print(f"reading from matricies/dicts/{ccss}_sequence.json")
@@ -121,10 +124,16 @@ def run(save_dir, m, style, style_w_count, congress, chamber):
     training_labels = labels['train']
     validation_labels = labels['validation']
     test_labels = labels['test']
+    print(f"len(training_labels)={len(training_labels)}")
+    print(f"len(validation_labels)={len(validation_labels)}")
+    print(f"len(test_labels)={len(test_labels)}")
 
     training_row_filenames = row_filenames['train']
     validation_row_filenames = row_filenames['validation']
     test_matrix_row_filenames = row_filenames['test']
+    print(f"len(validation_row_filenames)={len(validation_row_filenames)}")
+    print(f"len(training_row_filenames)={len(training_row_filenames)}")
+    print(f"len(test_matrix_row_filenames)={len(test_matrix_row_filenames)}")
 
     # some classifiers might have some parameter selection (classifier model building) requirement
     # if so, do it here, now - and use the selected parameters
@@ -199,7 +208,8 @@ if __name__ == "__main__":
     #             LSTMDropGloveModel(300),
     #             ]:  LogisticModel(), NN20DModel(), NN20NDModel(), NN1000DModel(), NN1000NDModel(), MNNBModel(), KNNModel(),LDAModel(), RFCVModel(), BoostModel(), SVMModel() 
     # for m in [ LogisticModel()]: # ,, NN20DModel(), NN20NDModel(), NN1000DModel(), NN1000NDModel(), MNNBModel(), KNNModel(), LDAModel(), RFCVModel(), BoostModel(), SVMModel()
-    for m in [ NN1000DModel(), NN1000NDModel()]: # ,, NN20DModel(), NN20NDModel(), NN1000DModel(), NN1000NDModel(), MNNBModel(), KNNModel(), LDAModel(), RFCVModel(), BoostModel(), SVMModel()
+    # for m in [ NNMultiModel()]: # ,, NN20DModel(), NN20NDModel(), NN1000DModel(), NN1000NDModel(), MNNBModel(), KNNModel(), LDAModel(), RFCVModel(), BoostModel(), SVMModel()
+    for m in [ LSTMDropBiDiModel(256), LSTMDropBiDiModel(512), CNN2AvgModel(256), CNN2AvgModel(512), TransformerModel(256, 128), TransformerModel(512, 128), TransformerModel(128, 64), TransformerModel(128, 32), TransformerModel(128, 16)]: 
     ### for m in [LSTMDropModel(), LSTMDropBiDiModel(), LSTMBiDiModel(), NNMultiModel()]:
     # for m in [LogisticModel("dict")]:
     # for m in [CNN2Model(), CNN2AvgModel(), LSTMDropBiDiModel(), TransformerModel(32), TransformerModel(64), TransformerMaxModel(), TransformerHDModel(128)]:
@@ -217,7 +227,8 @@ if __name__ == "__main__":
         # for style, style_w_count in [('max_balanced_0', 'max_balanced_0_1_1')]: #
         # for style, style_w_count in [('max_balanced_0', 'max_balanced_0_10_50')]: #
         # for style, style_w_count in [('bayram', 'bayram')]: #
-        for style, style_w_count in [('3gram_max_balanced_0', '3gram_max_balanced_0')]: #
+        for style, style_w_count in [('max_balanced_0', 'max_balanced_0_1_1')]: #
+        # for style, style_w_count in [('3gram_max_balanced_0', '3gram_max_balanced_0')]: #
         # for style, style_w_count in [('max_balanced_0', 'max_balanced_0_3_7'), ('max_balanced_0', 'max_balanced_0_10_50')]: #
         # for style, style_w_count in [('bayram', 'bayram')]: #
         # for style in ['3gram_max_balanced_0', '2gram_max_balanced_0']: # '097',

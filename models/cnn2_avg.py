@@ -8,12 +8,12 @@ import os
 import shutil
 
 class CNN2AvgModel(SequenceModel):
-    def __init__(self, instance_name=None):
+    def __init__(self, embedding_size, instance_name=None):
         super().__init__(instance_name)
-        self.embedding_size = 128
+        self.embedding_size = embedding_size
 
     def name(self):
-        return 'cnn2_avg_128_7_e128_s1_d3_50' if not self.instance_name else f"cnn2_avg_128_7_e128_s1_d3_50_{self.instance_name}"
+        return 'cnn2_avg_128_7_e128_s1_d3_50_e{self.embedding_size}' if not self.instance_name else f"cnn2_avg_128_7_e128_s1_d3_50_e{self.embedding_size}_{self.instance_name}"
 
     # inside, save the trained model to the corresponding folder - might be needed in the future
     def fit(self, training_matrix, training_labels, validation_matrix, validation_labels, dictionary):
@@ -27,7 +27,7 @@ class CNN2AvgModel(SequenceModel):
         validation_matrix = validation_matrix.toarray()
 
         # define the early stopping criteria
-        es = keras.callbacks.EarlyStopping(monitor='val_accuracy', min_delta=0, patience=15, verbose=0, mode='auto', restore_best_weights=True)
+        es = keras.callbacks.EarlyStopping(monitor='val_accuracy', min_delta=0, patience=5, verbose=0, mode='auto', restore_best_weights=True)
         self.model = keras.models.Sequential([layers.Embedding(dictionary_size, self.embedding_size, input_length= np.shape(training_matrix)[1]),
                                             layers.Conv1D(128, 7, padding="valid", activation="relu", strides=1),
                                             layers.Dropout(0.50),

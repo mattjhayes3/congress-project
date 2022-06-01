@@ -67,12 +67,13 @@ class TokenAndPositionEmbedding(layers.Layer):
         return config
 
 class TransformerModel(SequenceModel):
-    def __init__(self, embedding_size, instance_name=None):
+    def __init__(self, embedding_size, t_size, instance_name=None):
         super().__init__(instance_name)
         self.embedding_size = embedding_size
+        self.t_size = t_size
 
     def name(self):
-        return f'transformer_e{self.embedding_size}_2_d3_10' if not self.instance_name else f"transformer_e{self.embedding_size}_2_d3_10_{self.instance_name}"
+        return f'transformer_e{self.embedding_size}_2_d3_10_l{self.t_size}' if not self.instance_name else f"transformer_e{self.embedding_size}_2_d3_10_l{self.t_size}_{self.instance_name}"
 
     def fit(self, training_matrix, training_labels, validation_matrix, validation_labels, dictionary):
 
@@ -84,16 +85,16 @@ class TransformerModel(SequenceModel):
 
         validation_matrix = validation_matrix.toarray()
 
-        es = keras.callbacks.EarlyStopping(monitor='val_accuracy', min_delta=0, patience=15, verbose=0, mode='auto', restore_best_weights=True)
+        es = keras.callbacks.EarlyStopping(monitor='val_accuracy', min_delta=0, patience=5, verbose=0, mode='auto', restore_best_weights=True)
         self.model = keras.models.Sequential([
             TokenAndPositionEmbedding(np.shape(training_matrix)[1], dictionary_size, self.embedding_size),
-            TransformerBlock(self.embedding_size, 2, 128, rate=0.1),
+            TransformerBlock(self.embedding_size, 2, self.t_size, rate=0.1),
                                             layers.GlobalAveragePooling1D(),
                                             layers.Dropout(0.1),
                                             # layers.Dropout(0.5),
                                             # layers.Conv1D(128, 7, padding="valid", activation="relu", strides=1),
                                             # layers.GlobalMaxPooling1D(),
-                                            layers.Dense(64, activation="relu"),
+                                            layers.Dense(self.t_size/2, activation="relu"),
                                             # layers.Dropout(0.50),
                                             layers.Dropout(0.1),
                                             keras.layers.Dense(1, activation='sigmoid'),
