@@ -5,9 +5,9 @@ import json
 
 # for fmt_congress in ['97', '100', '103', '106', '109']: #,
 # for fmt_congress in []: #,
-n_range = [1,2,3]
-for style in ['max_balanced_0', 'bayram']:  # 'bayram'
-    for chamber in ["House", 'Senate']:  # "House", , "Senate"
+n_range = [1,2]
+for style in ['max_balanced_0', 'small_0']:  # 'bayram'
+    for chamber in ['Senate']:  # "House", , "Senate"
         distinct_count_min = 10 
         absolute_count_min = 50
         out_style = f'{style}_{distinct_count_min}_{absolute_count_min}'
