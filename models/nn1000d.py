@@ -13,7 +13,7 @@ import shutil
 
 class NN1000DModel(Model):
     def use_gpu(self):
-        return False
+        return True#False
         
     def name(self):
         return 'nn1000hd' if not self.instance_name else f"nn1000hd_{self.instance_name}"
