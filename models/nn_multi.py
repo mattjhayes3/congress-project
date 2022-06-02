@@ -11,7 +11,7 @@ import shutil
 
 class NNMultiModel(Model):
     def name(self):
-        return 'nnmulti2_tanh' if not self.instance_name else f"nnmulti2_tanh_{self.instance_name}"
+        return 'nnmulti2_tanh_nd' if not self.instance_name else f"nnmulti2_tanh_nd_{self.instance_name}"
 
     # def use_gpu(self):
     #     return True
@@ -23,14 +23,14 @@ class NNMultiModel(Model):
 
         num_features = np.shape(training_matrix)[1]
 
-        es = keras.callbacks.EarlyStopping(monitor='val_accuracy', min_delta=0, patience=15, verbose=0, mode='auto', restore_best_weights=True)
+        es = keras.callbacks.EarlyStopping(monitor='val_accuracy', min_delta=0, patience=10, verbose=0, mode='auto', restore_best_weights=True)
         self.model = keras.models.Sequential([
                                             keras.layers.Dense(1000, input_dim=num_features, activation='tanh'),
                                             # keras.layers.Dropout(0.15),
-                                            keras.layers.Dropout(0.98),
+                                            # keras.layers.Dropout(0.98),
                                             keras.layers.Dense(500, activation='tanh'),
                                             # keras.layers.Dropout(0.15),
-                                            keras.layers.Dropout(0.98),
+                                            #keras.layers.Dropout(0.98),
                                             # keras.layers.Dense(40, input_dim=num_features, activation='relu'),
                                             # keras.layers.Dropout(0.15),
                                             # keras.layers.Dropout(0.5),

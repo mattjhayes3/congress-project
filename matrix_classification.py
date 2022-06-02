@@ -218,7 +218,7 @@ if __name__ == "__main__":
         # for style, style_w_count in [('max_balanced_0', 'max_balanced_0_1_1')]: #
         # for style, style_w_count in [('max_balanced_0', 'max_balanced_0_10_50')]: #
         # for style, style_w_count in [('bayram', 'bayram')]: #
-        for style, style_w_count in [('max_balanced_0', 'max_balanced_0')]: #
+        for style, style_w_count in [('max_balanced_0', 'max_balanced_0_10_50')]: #
         # for style, style_w_count in [('3gram_max_balanced_0', '3gram_max_balanced_0')]: #
         # for style, style_w_count in [('max_balanced_0', 'max_balanced_0_3_7'), ('max_balanced_0', 'max_balanced_0_10_50')]: #
         # for style, style_w_count in [('bayram', 'bayram')]: #
