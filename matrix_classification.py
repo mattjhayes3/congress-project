@@ -170,13 +170,13 @@ def run(save_dir, m, style, style_w_count, congress, chamber):
     # save the file level feature vector classification results
     train_classifications_path = f"{save_dir}Training/training_classified_unigram_%s_{ccss}.txt"
     com.saveFileLevelClassificationResults(congress, training_row_filenames, training_labels, training_classification_results_prob,
-                                           train_classifications_path, np.shape(training_matrix)[1])
+                                           train_classifications_path, np.shape(training_matrix)[1], save_details=False)
     val_classifications_path = f"{save_dir}Validation/validation_classified_unigram_%s_{ccss}.txt"
     com.saveFileLevelClassificationResults(congress, validation_row_filenames, validation_labels, validation_classification_results_prob,
-                                           val_classifications_path, np.shape(validation_matrix)[1])
+                                           val_classifications_path, np.shape(validation_matrix)[1], save_details=False)
     test_classifications_path = f"{save_dir}Test/test_classified_unigram_%s_{ccss}.txt"
     com.saveFileLevelClassificationResults(congress, test_matrix_row_filenames, test_labels, test_classification_results_prob,
-                                           test_classifications_path, np.shape(test_matrix)[1])
+                                           test_classifications_path, np.shape(test_matrix)[1], save_details=False)
 
     # save the overall, split level results for the validation, test, and shor sets
     com.saveSplitStats(save_dir, m.name(), congress, chamber, styles,  "train",
@@ -197,23 +197,10 @@ if __name__ == "__main__":
     # for cf in [logistic, nn20d, nn1000d, nn1000nd]: #svm
     # for i_split in ['103']: #,
     # LSTMModel()   LogisticSigModel() NNMultiModel("05")
-    # for m in [LSTMGloveModel(50),
-    #             LSTMGloveModel(100),
-    #             LSTMGloveModel(200),
-    #             LSTMGloveModel(300),
-    #             LSTMDropModel(),
-    #             LSTMWord2VecModel(),
-    #             LSTMDropGloveModel(50),
-    #             LSTMDropGloveModel(100),
-    #             LSTMDropGloveModel(200),
-    #             LSTMDropGloveModel(300),
-    #             ]:  LogisticModel(), NN20DModel(), NN20NDModel(), NN1000DModel(), NN1000NDModel(), MNNBModel(), KNNModel(),LDAModel(), RFCVModel(), BoostModel(), SVMModel() 
-    # for m in [ LogisticModel()]: # ,, NN20DModel(), NN20NDModel(), NN1000DModel(), NN1000NDModel(), MNNBModel(), KNNModel(), LDAModel(), RFCVModel(), BoostModel(), SVMModel()
-    # for m in [ NNMultiModel()]: # ,, NN20DModel(), NN20NDModel(), NN1000DModel(), NN1000NDModel(), MNNBModel(), KNNModel(), LDAModel(), RFCVModel(), BoostModel(), SVMModel()
-    for m in [ TransformerNDModel(128, 128), CNN2AvgModel(256), CNN2AvgModel(512), TransformerModel(256, 128), TransformerModel(512, 128), TransformerModel(128, 64), TransformerModel(128, 32), TransformerModel(128, 16), TransformerModel(64, 128), TransformerModel(64, 64), TransformerModel(64, 32), TransformerModel(32, 32), TransformerModel(32, 16)]: 
     #for m in [ LogisticModel()]: # ,, NN20DModel(), NN20NDModel(), NN1000DModel(), NN1000NDModel(), MNNBModel(), KNNModel(), LDAModel(), RFCVModel(), BoostModel(), SVMModel()
+    # for m in [ LSTMDropBiDiModel(256), LSTMDropBiDiModel(512), CNN2AvgModel(256), CNN2AvgModel(512), TransformerModel(256, 128), TransformerModel(512, 128), TransformerModel(128, 64), TransformerModel(128, 32), TransformerModel(128, 16)]: 
     ### for m in [LSTMDropModel(), LSTMDropBiDiModel(), LSTMBiDiModel(), NNMultiModel()]:
-    # for m in [LogisticModel("dict")]:
+    for m in [LogisticModel()]:
     # for m in [CNN2Model(), CNN2AvgModel(), LSTMDropBiDiModel(), TransformerModel(32), TransformerModel(64), TransformerMaxModel(), TransformerHDModel(128)]:
     #for m in [NN1000DModel(), NN1000NDModel(), NNMultiModel()]:
     # for m in [XGBoostModel(), LDAModel()]:
@@ -231,14 +218,15 @@ if __name__ == "__main__":
         # for style, style_w_count in [('max_balanced_0', 'max_balanced_0_1_1')]: #
         # for style, style_w_count in [('max_balanced_0', 'max_balanced_0_10_50')]: #
         # for style, style_w_count in [('bayram', 'bayram')]: #
-        for style, style_w_count in [('max_balanced_0', 'max_balanced_0_1_1')]: #
+        for style, style_w_count in [('max_balanced_0', 'max_balanced_0')]: #
         # for style, style_w_count in [('3gram_max_balanced_0', '3gram_max_balanced_0')]: #
         # for style, style_w_count in [('max_balanced_0', 'max_balanced_0_3_7'), ('max_balanced_0', 'max_balanced_0_10_50')]: #
         # for style, style_w_count in [('bayram', 'bayram')]: #
         # for style in ['3gram_max_balanced_0', '2gram_max_balanced_0']: # '097',
-            for chamber in ['House']:
-                for congress in [97, 100, 103, 106, 109, 112, 114]:
-                #for congress in range(43, 97):
+            for chamber in ['House', 'Senate']:
+                # for congress in [97, 100, 103, 106, 109, 112, 114]:
+                # for congress in [106]:
+                for congress in range(91, 97):
                     fmt_congress = "%03d" % congress
                     np.random.seed(0)
                     tf.random.set_seed(0)
