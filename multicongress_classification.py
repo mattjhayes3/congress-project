@@ -146,7 +146,7 @@ def run(save_dir, m, style, style_w_count, congresses, chamber):
     if grid is not None:
        df = pd.DataFrame.from_dict(grid.cv_results_)
        df.sort_values('rank_test_score')
-       df.to_csv(f'{save_dir}models/{chamber}{congress}_{style}_cv_results.csv')
+       df.to_csv(f'{save_dir}models/{chamber}{congresses}_{style}_cv_results.csv')
     m.fit(training_matrix, training_labels,
           validation_matrix, validation_labels, dictionary)
     if not m.is_baseline():

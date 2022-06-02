@@ -58,15 +58,18 @@ def shouldExcludeText(speech_text):
 # selected_congresses = ['097', '098', '099', '100', '101', '102', '103', '104', '105', '106', '114', '113', '112', '111', '110', '109', '108', '107']
 # selected_congresses = ['100', '106', '114', '112', '109']
 # selected_congresses = ['103']
-selected_congresses = range(97, 115) # range(43, 97)
+selected_congresses = range(97, 112) # range(43, 97)
 
 for selected_congress in selected_congresses:
+    # root = "../../congress_data/hein-bound/"
     root = "../../congress_data/hein-daily/" if selected_congress >= 97 else "../../congress_data/hein-bound/"
     print(f"processing congress {selected_congress}")
 
     fmt_congress = "%03d" % selected_congress
-    os.makedirs('../../processed_data/Senate_' + fmt_congress, exist_ok=True)
-    os.makedirs('../../processed_data/House_' + fmt_congress, exist_ok=True)
+    # out_dir = '../../processed_data_bound'
+    out_dir = '../../processed_data'
+    os.makedirs(f'{out_dir}/Senate_{fmt_congress}', exist_ok=True)
+    os.makedirs(f'{out_dir}/House_{fmt_congress}', exist_ok=True)
 
     speech_fo = open(root + 'speeches_' + fmt_congress + '.txt', 'r', errors='replace')
     # collect the speeches of this congress here, associated with it's unique speech id
@@ -121,12 +124,12 @@ for selected_congress in selected_congresses:
                 # start writing up what you read here
                 if chamber == 'H':
                     print('writing house ' + filenamew)
-                    fo_w = open('../../processed_data/House_' + fmt_congress + '/' + filenamew, 'w')
+                    fo_w = open(f'{out_dir}/House_{fmt_congress}/{filenamew}', 'w')
                     fo_w.write(speech_dict[speech_id])
                     fo_w.close()
                 elif chamber == 'S':
                     print('writing senate ' + filenamew)
-                    fo_w = open('../../processed_data/Senate_' + fmt_congress + '/' + filenamew, 'w')
+                    fo_w = open(f'{out_dir}/Senate_{fmt_congress}/{filenamew}', 'w')
                     fo_w.write(speech_dict[speech_id])
                     fo_w.close()
                 else:

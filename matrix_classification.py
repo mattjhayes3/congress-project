@@ -194,22 +194,8 @@ def run(save_dir, m, style, style_w_count, congress, chamber):
 if __name__ == "__main__":
     np.random.seed(0)
     tf.random.set_seed(0)
-    # for i_split in ['98', '99', '100', '101', '102', '103', '104', '105', '106', '107', '108', '109', '110', '111', '112', '113']: #,
-    # for cf in [logistic, nn20d, nn1000d, nn1000nd]: #svm
-    # for i_split in ['103']: #,
-    # LSTMModel()   LogisticSigModel() NNMultiModel("05")
-    #for m in [ LogisticModel()]: # ,, NN20DModel(), NN20NDModel(), NN1000DModel(), NN1000NDModel(), MNNBModel(), KNNModel(), LDAModel(), RFCVModel(), BoostModel(), SVMModel()
-    # for m in [ LSTMDropBiDiModel(256), LSTMDropBiDiModel(512), CNN2AvgModel(256), CNN2AvgModel(512), TransformerModel(256, 128), TransformerModel(512, 128), TransformerModel(128, 64), TransformerModel(128, 32), TransformerModel(128, 16)]: 
-    ### for m in [LSTMDropModel(), LSTMDropBiDiModel(), LSTMBiDiModel(), NNMultiModel()]:
-    for m in [CNN2AvgModel(256), CNN2AvgModel(512), CNN2AvgDropModel(256), CNN2AvgDropModel(512)]: #LogisticModel()
-    # for m in [CNN2Model(), CNN2AvgModel(), LSTMDropBiDiModel(), TransformerModel(32), TransformerModel(64), TransformerMaxModel(), TransformerHDModel(128)]:
-    #for m in [NN1000DModel(), NN1000NDModel(), NNMultiModel()]:
-    # for m in [XGBoostModel(), LDAModel()]:
-    # for m in [TransformerModel(), CNN2Model(), LSTMDropBiDiModel()]
-    # for m in [BoostModel()]: 
-        #   LDAModel() LSTMDropModel(), LSTMDropBiDiModel(), , NNMultiModel() LSTMDropGloveModel(50), LSTMDropGloveModel(100)
-         # , LSTMModel(), LogisticModel(), NN20DModel(), NN20NDModel(), NN1000DModel(), NN1000NDModel(), SVMModel(), MNNBModel(), KNNModel(), LDAModel(), RFCVModel(), BoostModel()]:  
-        # for m in [LogisticModel('tfidf'), NN20DModel('tfidf'), NN20NDModel('tfidf'), NN1000DModel('tfidf'), NN1000NDModel('tfidf'), SVMModel('tfidf'), MNNBModel('tfidf'), KNNModel('tfidf'), LDAModel('tfidf'), RFCVModel('tfidf'), BoostModel('tfidf')]:  
+    for m in [CNN2AvgModel(200, glove=True), CNN2AvgModel(300, glove=True), CNN2AvgDropModel(200, glove=True), CNN2AvgDropModel(300, glove=True), CNN2AvgModel(200, glove=True, trainable=True), CNN2AvgModel(300, glove=True, trainable=True), CNN2AvgDropModel(200, glove=True, trainable=True), CNN2AvgDropModel(300, glove=True, trainable=True), CNN2AvgModel(200, glove=False), CNN2AvgModel(300, glove=False), CNN2AvgDropModel(200, glove=False), CNN2AvgDropModel(300, glove=False)]: 
+    # for m in [LogisticModel()]: 
         save_dir = "models/" + m.getSaveDirectory()
         for subdir in ["", "models/", "Training/", "Validation/", "Test/"]:
             print(f"makedir", save_dir+subdir)
@@ -224,10 +210,10 @@ if __name__ == "__main__":
         # for style, style_w_count in [('max_balanced_0', 'max_balanced_0_3_7'), ('max_balanced_0', 'max_balanced_0_10_50')]: #
         # for style, style_w_count in [('bayram', 'bayram')]: #
         # for style in ['3gram_max_balanced_0', '2gram_max_balanced_0']: # '097',
-            for chamber in ['House']:
+            for chamber in ['Senate']:
                 for congress in [97, 100, 103, 106, 109, 112, 114]:
                 # for congress in [106]:
-                #for congress in range(91, 97):
+                # for congress in range(91, 97):
                     fmt_congress = "%03d" % congress
                     np.random.seed(0)
                     tf.random.set_seed(0)

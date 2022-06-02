@@ -75,9 +75,7 @@ class TransformerModel(SequenceModel):
         self.trainable = trainable
 
     def name(self):
-        trainable_part = 'trainable' if trainable else "not_trainable"
-        glove_part = "" if not self.glove else f"_glove_{trainable_part}"
-        return f'transformer_e{self.embedding_size}_2_d3_10_l{self.t_size}{glove_part}' if not self.instance_name else f"transformer_e{self.embedding_size}_2_d3_10_l{self.t_size}{glove_part}_{self.instance_name}"
+        return f'transformer_e{self.embedding_size}_2_d3_10_l{self.t_size}' if not self.instance_name else f"transformer_e{self.embedding_size}_2_d3_10_l{self.t_size}_{self.instance_name}"
 
     def fit(self, training_matrix, training_labels, validation_matrix, validation_labels, dictionary):
 

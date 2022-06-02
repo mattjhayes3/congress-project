@@ -67,7 +67,7 @@ class SequenceModel(Model):
 	def preprocess(self, matrix):
 		return matrix
 
-	def load_glove_embeddings(self, training_matrix):
+	def load_glove_embeddings(self, training_matrix, dictionary):
 		embedding_index = loadEmbeddings(f"../glove.6B/glove.6B.{self.embedding_size}d.txt")
 		dictionary_size = np.max(training_matrix) + 2
 		print(f"dictionary_size =  {dictionary_size}")
@@ -84,4 +84,4 @@ class SequenceModel(Model):
 				hits += 1
 				embedding_matrix[i, :] = vector
 		print("Converted %d words (%d misses)" % (hits, misses))
-		return embedding_matrix, dictionary_size
+		return embedding_matrix

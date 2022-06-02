@@ -10,10 +10,10 @@ if __name__ == "__main__":
     seed = 0
     style = "small"
     random.seed(seed)
-    processed_dir = '../../processed_data/'
-    bayram_congresses = [97, 100, 103, 106, 109, 112, 114]
+    processed_dir = '../../processed_data_bound/'
+    # bayram_congresses = [97, 100, 103, 106, 109, 112, 114]
     # selected_congresses = [97, 100, 103, 106, 109, 112, 114]#range(43, 115)
-    selected_congresses = range(97, 115)  # [100]
+    selected_congresses = range(97, 112)  # [100]
     # selected_congresses = range(97, 115)
     for chamber in ["House", "Senate"]: # , , 
         for i in selected_congresses:
@@ -105,7 +105,7 @@ if __name__ == "__main__":
 
             # print(f"selected_valid_files_rep={len(selected_valid_files_rep)}, selected_valid_files_dem={len(selected_valid_files_rep)}, selected_train_files_rep={len(selected_train_files_rep)}, selected_train_files_dem={len(selected_train_files_dem)}, selected_test_files_dem={len(selected_test_files_dem)}, selected_test_files_rep={len(selected_test_files_rep)}")
 
-            dataset = f"{chamber}{fmt_congress}_{style}"
+            dataset = f"{chamber}{fmt_congress}_{style}_bound"
             fo_train = open(f'../splits/{dataset}_{seed}_train.txt', 'w')
             fo_test = open(f'../splits/{dataset}_{seed}_test.txt', 'w')
             fo_valid = open(f'../splits/{dataset}_{seed}_valid.txt', 'w')
