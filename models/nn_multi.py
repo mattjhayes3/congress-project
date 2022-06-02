@@ -25,12 +25,12 @@ class NNMultiModel(Model):
 
         es = keras.callbacks.EarlyStopping(monitor='val_accuracy', min_delta=0, patience=15, verbose=0, mode='auto', restore_best_weights=True)
         self.model = keras.models.Sequential([
-                                            keras.layers.Dense(2048, input_dim=num_features, activation='tanh'),
+                                            keras.layers.Dense(1000, input_dim=num_features, activation='tanh'),
                                             # keras.layers.Dropout(0.15),
-                                            keras.layers.Dropout(0.95),
-                                            keras.layers.Dense(256, input_dim=num_features, activation='tanh'),
+                                            keras.layers.Dropout(0.98),
+                                            keras.layers.Dense(500, activation='tanh'),
                                             # keras.layers.Dropout(0.15),
-                                            keras.layers.Dropout(0.95),
+                                            keras.layers.Dropout(0.98),
                                             # keras.layers.Dense(40, input_dim=num_features, activation='relu'),
                                             # keras.layers.Dropout(0.15),
                                             # keras.layers.Dropout(0.5),

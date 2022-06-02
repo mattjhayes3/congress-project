@@ -200,7 +200,7 @@ if __name__ == "__main__":
     #for m in [ LogisticModel()]: # ,, NN20DModel(), NN20NDModel(), NN1000DModel(), NN1000NDModel(), MNNBModel(), KNNModel(), LDAModel(), RFCVModel(), BoostModel(), SVMModel()
     # for m in [ LSTMDropBiDiModel(256), LSTMDropBiDiModel(512), CNN2AvgModel(256), CNN2AvgModel(512), TransformerModel(256, 128), TransformerModel(512, 128), TransformerModel(128, 64), TransformerModel(128, 32), TransformerModel(128, 16)]: 
     ### for m in [LSTMDropModel(), LSTMDropBiDiModel(), LSTMBiDiModel(), NNMultiModel()]:
-    for m in [LogisticModel()]:
+    for m in [NNMultiModel()]: #LogisticModel()
     # for m in [CNN2Model(), CNN2AvgModel(), LSTMDropBiDiModel(), TransformerModel(32), TransformerModel(64), TransformerMaxModel(), TransformerHDModel(128)]:
     #for m in [NN1000DModel(), NN1000NDModel(), NNMultiModel()]:
     # for m in [XGBoostModel(), LDAModel()]:
@@ -223,10 +223,10 @@ if __name__ == "__main__":
         # for style, style_w_count in [('max_balanced_0', 'max_balanced_0_3_7'), ('max_balanced_0', 'max_balanced_0_10_50')]: #
         # for style, style_w_count in [('bayram', 'bayram')]: #
         # for style in ['3gram_max_balanced_0', '2gram_max_balanced_0']: # '097',
-            for chamber in ['House', 'Senate']:
-                # for congress in [97, 100, 103, 106, 109, 112, 114]:
+            for chamber in ['House']: # ,
+                for congress in [97, 100, 103, 106, 109, 112, 114]:
                 # for congress in [106]:
-                for congress in range(91, 97):
+                #for congress in range(43, 91):
                     fmt_congress = "%03d" % congress
                     np.random.seed(0)
                     tf.random.set_seed(0)
