@@ -5,16 +5,16 @@ from scipy import sparse
 
 # for fmt_congress in ['97', '100', '103', '106', '109']: #, 
 # for fmt_congress in []: #, 
-for style in ['max_balanced_0', 'small_0']: # '' 'bayram'
-	for chamber in [ "House", "Senate" ]: # "House", "Senate"
-		distinct_count_min = 10
-		absolute_count_min = 50
+for style in ['max_balanced_0' ]: # '' 'bayram'
+	for chamber in [  "House", "Senate"]: # "House", "Senate" , 'small_0'
+		distinct_count_min = 3
+		absolute_count_min = 7
 		out_style = f'{style}_{distinct_count_min}_{absolute_count_min}'
 		# a = list(range(44, 42, -1)) # 97, 43
 		# for i in [  100]: #, 100,
 		# for i in range(114, 42, -1):
 		# for i in a:
-		for congress in range(97, 115):
+		for congress in range(43, 115):
 		# for congress in [ 97, 100, 103, 106, 109, 112, 114]: #, 100,
 			# if i in [ 103, 106, 109, 112, 114] and chamber =="House":
 			# 	continue

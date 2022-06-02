@@ -11,6 +11,7 @@ import json
 import os
 
 def loadEmbeddings(path):
+    print(f"Loading embeddings from {path}...")
     embeddings_index = {}
     with open(path) as f:
         for line in f:
@@ -20,7 +21,8 @@ def loadEmbeddings(path):
             # if not word.isalpha():
             #     print(f"non-alpha '{word}'")
             coefs = np.fromstring(coefs, "f", sep=" ")
-            embeddings_index[word] = coefs
+            if word not in embeddings_index:
+                embeddings_index[word] = coefs
     return embeddings_index
 
 

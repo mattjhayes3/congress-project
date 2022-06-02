@@ -194,26 +194,47 @@ def run(save_dir, m, style, style_w_count, congress, chamber):
 if __name__ == "__main__":
     np.random.seed(0)
     tf.random.set_seed(0)
-    for m in [CNN2AvgModel(200, glove=True), CNN2AvgModel(300, glove=True), CNN2AvgDropModel(200, glove=True), CNN2AvgDropModel(300, glove=True), CNN2AvgModel(200, glove=True, trainable=True), CNN2AvgModel(300, glove=True, trainable=True), CNN2AvgDropModel(200, glove=True, trainable=True), CNN2AvgDropModel(300, glove=True, trainable=True), CNN2AvgModel(200, glove=False), CNN2AvgModel(300, glove=False), CNN2AvgDropModel(200, glove=False), CNN2AvgDropModel(300, glove=False)]: 
-    # for m in [LogisticModel()]: 
+    models = [CNN2AvgDropModel(300, pretrained='glove840'), 
+            CNN2AvgModel(300, pretrained='glove840'),
+            CNN2AvgDropModel(300, pretrained='glove840', trainable=True), 
+            CNN2AvgModel(300, pretrained='glove840', trainable=True), 
+            TransformerModel(50, 128, pretrained='glove'), 
+            TransformerModel(100, 128, pretrained='glove'), 
+            TransformerModel(200, 128, pretrained='glove'), 
+            TransformerModel(300, 128, pretrained='glove'),
+            TransformerModel(300, 128, pretrained='glove840'),
+            TransformerModel(50, 128, pretrained='glove', trainable=True),
+            TransformerModel(100, 128, pretrained='glove', trainable=True), 
+            TransformerModel(200, 128, pretrained='glove', trainable=True), 
+            TransformerModel(300, 128, pretrained='glove', trainable=True),
+            TransformerModel(300, 128, pretrained='glove840', trainable=True), 
+            TransformerModel(50, 128), 
+            TransformerModel(100, 128), 
+            TransformerModel(200, 128), 
+            TransformerModel(300, 128)]
+    for m_num, m in enumerate(models): 
+        print(f"### model number {m_num}/{len(models)} ###")
+        #
+        # for m in [CNN2AvgModel(200, glove=True), CNN2AvgModel(300, glove=True), CNN2AvgDropModel(200, glove=True), CNN2AvgDropModel(300, glove=True), CNN2AvgModel(200, glove=True, trainable=True), CNN2AvgModel(300, glove=True, trainable=True), CNN2AvgDropModel(200, glove=True, trainable=True), CNN2AvgDropModel(300, glove=True, trainable=True), CNN2AvgModel(200, glove=False), CNN2AvgModel(300, glove=False), CNN2AvgDropModel(200, glove=False), CNN2AvgDropModel(300, glove=False)]: 
+        # for m in [LogisticModel()]: 
         save_dir = "models/" + m.getSaveDirectory()
         for subdir in ["", "models/", "Training/", "Validation/", "Test/"]:
             print(f"makedir", save_dir+subdir)
             os.makedirs(save_dir + subdir, exist_ok=True)
         # for i_split in [ '100', '103', '106', '109', '112', '114']:  '097',
         # for style, style_w_count in [('max_balanced_0', 'max_balanced_0')]: #
-        # for style, style_w_count in [('max_balanced_0', 'max_balanced_0_1_1')]: #
+        for style, style_w_count in [('max_balanced_0', 'max_balanced_0_1_1')]: #
         # for style, style_w_count in [('max_balanced_0', 'max_balanced_0_10_50')]: #
         # for style, style_w_count in [('bayram', 'bayram')]: #
-        for style, style_w_count in [('max_balanced_0', 'max_balanced_0_1_1')]: #
+        #### for style, style_w_count in [('max_balanced_0', 'max_balanced_0_10_50'), ('max_balanced_0', 'max_balanced_0_3_7')]: #
         # for style, style_w_count in [('3gram_max_balanced_0', '3gram_max_balanced_0')]: #
         # for style, style_w_count in [('max_balanced_0', 'max_balanced_0_3_7'), ('max_balanced_0', 'max_balanced_0_10_50')]: #
         # for style, style_w_count in [('bayram', 'bayram')]: #
         # for style in ['3gram_max_balanced_0', '2gram_max_balanced_0']: # '097',
-            for chamber in ['House']:
+            for chamber in ['House']: # , 'Senate'
                 for congress in [97, 100, 103, 106, 109, 112, 114]:
-                # for congress in [106]:
-                # for congress in range(91, 97):
+                # for congress in [81]:
+                # for congress in range(43, 115):
                     fmt_congress = "%03d" % congress
                     np.random.seed(0)
                     tf.random.set_seed(0)

@@ -58,6 +58,12 @@ class Model:
 		return False
 
 class SequenceModel(Model):
+	def __init__(self, embedding_size, pretrained=None, trainable=False, instance_name=None):
+		super().__init__(instance_name)
+		self.embedding_size = embedding_size
+		self.pretrained = pretrained
+		self.trainable = trainable
+
 	def is_sequence(self):
 		return True
 	
@@ -67,8 +73,13 @@ class SequenceModel(Model):
 	def preprocess(self, matrix):
 		return matrix
 
-	def load_glove_embeddings(self, training_matrix, dictionary):
-		embedding_index = loadEmbeddings(f"../glove.6B/glove.6B.{self.embedding_size}d.txt")
+	def load_glove_embeddings(self, model, training_matrix, dictionary):
+		if model == 'glove':
+			embedding_index = loadEmbeddings(f"../glove.6B/glove.6B.{self.embedding_size}d.txt")
+		elif model == 'glove840':
+			embedding_index = loadEmbeddings(f"../glove.840B.{self.embedding_size}d.txt")
+		else:
+			raise Exception(f"Unexpected model {model}")
 		dictionary_size = np.max(training_matrix) + 2
 		print(f"dictionary_size =  {dictionary_size}")
 		embedding_matrix = np.zeros((dictionary_size, self.embedding_size))
@@ -79,6 +90,9 @@ class SequenceModel(Model):
 				word = '.'
 			vector = embedding_index.get(word)
 			if vector is None:
+				misses += 1
+			elif vector.shape[0] != self.embedding_size:
+				print(f"unexpected embedding size {vector.shape}")
 				misses += 1
 			else:
 				hits += 1

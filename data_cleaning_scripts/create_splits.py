@@ -8,14 +8,15 @@ def getBasenames(filename_list):
 if __name__ == "__main__":
     # select 3000 speeches from each set at random
     seed = 0
-    style = "small"
+    style = "max_balanced"
     random.seed(seed)
-    processed_dir = '../../processed_data_bound/'
-    # bayram_congresses = [97, 100, 103, 106, 109, 112, 114]
+    processed_dir = '../../processed_data/'
+    # bayram_congresses = []
+    bayram_congresses = [97, 100, 103, 106, 109, 112, 114]
     # selected_congresses = [97, 100, 103, 106, 109, 112, 114]#range(43, 115)
-    selected_congresses = range(97, 112)  # [100]
+    selected_congresses = [81] #range(97, 112)  # [100]
     # selected_congresses = range(97, 115)
-    for chamber in ["House", "Senate"]: # , , 
+    for chamber in ["House"]: # , , 
         for i in selected_congresses:
             fmt_congress = "%03d" % i
             print(f'Processsing {chamber} {i} {style}')
@@ -105,7 +106,7 @@ if __name__ == "__main__":
 
             # print(f"selected_valid_files_rep={len(selected_valid_files_rep)}, selected_valid_files_dem={len(selected_valid_files_rep)}, selected_train_files_rep={len(selected_train_files_rep)}, selected_train_files_dem={len(selected_train_files_dem)}, selected_test_files_dem={len(selected_test_files_dem)}, selected_test_files_rep={len(selected_test_files_rep)}")
 
-            dataset = f"{chamber}{fmt_congress}_{style}_bound"
+            dataset = f"{chamber}{fmt_congress}_{style}"
             fo_train = open(f'../splits/{dataset}_{seed}_train.txt', 'w')
             fo_test = open(f'../splits/{dataset}_{seed}_test.txt', 'w')
             fo_valid = open(f'../splits/{dataset}_{seed}_valid.txt', 'w')

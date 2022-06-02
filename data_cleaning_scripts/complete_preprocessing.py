@@ -97,7 +97,8 @@ def removeSpaceFromWords(tlist):
 # i_list = ['100', '101', '102', '103', '104', '105', '106', '107', '108', '109', '110', '111' '112', '113' '114']
 # i_list = ['097', '098', '099', '111', '112', '113']
 # i_list = ['114']
-processed_dir = '../../processed_data_bound/'
+# processed_dir = '../../processed_data_bound/'
+processed_dir = '../../processed_data/'
 # selected_congresses = range(43, 97)
 for chamber in [ "Senate", "House"]: #
     # for i in selected_congresses:

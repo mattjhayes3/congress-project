@@ -42,12 +42,12 @@ class TransformerBlock(layers.Layer):
         return config
 
 class TokenAndPositionEmbedding(layers.Layer):
-    def __init__(self, maxlen, vocab_size, embed_dim):
+    def __init__(self, maxlen, vocab_size, embed_dim, token_embedding=None):
         super(TokenAndPositionEmbedding, self).__init__()
         self.maxlen = maxlen
         self.vocab_size = vocab_size
         self.embed_dim = embed_dim
-        self.token_emb = layers.Embedding(input_dim=vocab_size, output_dim=embed_dim)
+        self.token_emb = layers.Embedding(input_dim=vocab_size, output_dim=embed_dim) if not token_embedding else token_embedding
         self.pos_emb = layers.Embedding(input_dim=maxlen, output_dim=embed_dim)
 
     def call(self, x):
@@ -67,15 +67,14 @@ class TokenAndPositionEmbedding(layers.Layer):
         return config
 
 class TransformerModel(SequenceModel):
-    def __init__(self, embedding_size, t_size, glove=False, trainable=False, instance_name=None):
-        super().__init__(instance_name)
-        self.embedding_size = embedding_size
+    def __init__(self, embedding_size, t_size, pretrained=None, trainable=False, instance_name=None):
+        super().__init__(embedding_size, pretrained, trainable, instance_name)
         self.t_size = t_size
-        self.glove = glove
-        self.trainable = trainable
 
     def name(self):
-        return f'transformer_e{self.embedding_size}_2_d3_10_l{self.t_size}' if not self.instance_name else f"transformer_e{self.embedding_size}_2_d3_10_l{self.t_size}_{self.instance_name}"
+        trainable_part = 'trainable' if self.trainable else "not_trainable"
+        glove_part = "" if not self.pretrained else f"_{self.pretrained}_{trainable_part}"
+        return f'transformer_e{self.embedding_size}_2_d3_10_l{self.t_size}{glove_part}' if not self.instance_name else f"transformer_e{self.embedding_size}_2_d3_10_l{self.t_size}{glove_part}_{self.instance_name}"
 
     def fit(self, training_matrix, training_labels, validation_matrix, validation_labels, dictionary):
 
@@ -86,10 +85,13 @@ class TransformerModel(SequenceModel):
         print(f"dictionary_size =  {dictionary_size}")
 
         validation_matrix = validation_matrix.toarray()
+        token_embedding = None
+        if self.pretrained:
+            token_embedding = layers.Embedding(dictionary_size, self.embedding_size, input_length=np.shape(training_matrix)[1], embeddings_initializer=keras.initializers.Constant(self.load_glove_embeddings(self.pretrained, training_matrix, dictionary)), trainable=self.trainable)
 
         es = keras.callbacks.EarlyStopping(monitor='val_accuracy', min_delta=0, patience=5, verbose=0, mode='auto', restore_best_weights=True)
         self.model = keras.models.Sequential([
-            TokenAndPositionEmbedding(np.shape(training_matrix)[1], dictionary_size, self.embedding_size),
+            TokenAndPositionEmbedding(np.shape(training_matrix)[1], dictionary_size, self.embedding_size, token_embedding=token_embedding),
             TransformerBlock(self.embedding_size, 2, self.t_size, rate=0.1),
                                             layers.GlobalAveragePooling1D(),
                                             layers.Dropout(0.1),
