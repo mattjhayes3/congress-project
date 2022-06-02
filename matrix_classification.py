@@ -37,6 +37,7 @@ from models.transformer_hd import TransformerHDModel
 from models.transformer_max import TransformerMaxModel
 from models.cnn2_avg import CNN2AvgModel
 from models.logistic_sig import LogisticSigModel
+from models.transformer_nd import TransformerNDModel
 import models.common_fns as com
 from models.svm import SVMModel
 import pickle
@@ -209,7 +210,7 @@ if __name__ == "__main__":
     #             ]:  LogisticModel(), NN20DModel(), NN20NDModel(), NN1000DModel(), NN1000NDModel(), MNNBModel(), KNNModel(),LDAModel(), RFCVModel(), BoostModel(), SVMModel() 
     # for m in [ LogisticModel()]: # ,, NN20DModel(), NN20NDModel(), NN1000DModel(), NN1000NDModel(), MNNBModel(), KNNModel(), LDAModel(), RFCVModel(), BoostModel(), SVMModel()
     # for m in [ NNMultiModel()]: # ,, NN20DModel(), NN20NDModel(), NN1000DModel(), NN1000NDModel(), MNNBModel(), KNNModel(), LDAModel(), RFCVModel(), BoostModel(), SVMModel()
-    for m in [ LSTMDropBiDiModel(256), LSTMDropBiDiModel(512), CNN2AvgModel(256), CNN2AvgModel(512), TransformerModel(256, 128), TransformerModel(512, 128), TransformerModel(128, 64), TransformerModel(128, 32), TransformerModel(128, 16)]: 
+    for m in [ TransformerNDModel(128, 128), CNN2AvgModel(256), CNN2AvgModel(512), TransformerModel(256, 128), TransformerModel(512, 128), TransformerModel(128, 64), TransformerModel(128, 32), TransformerModel(128, 16), TransformerModel(64, 128), TransformerModel(64, 64), TransformerModel(64, 32), TransformerModel(32, 32), TransformerModel(32, 16)]: 
     #for m in [ LogisticModel()]: # ,, NN20DModel(), NN20NDModel(), NN1000DModel(), NN1000NDModel(), MNNBModel(), KNNModel(), LDAModel(), RFCVModel(), BoostModel(), SVMModel()
     ### for m in [LSTMDropModel(), LSTMDropBiDiModel(), LSTMBiDiModel(), NNMultiModel()]:
     # for m in [LogisticModel("dict")]:
@@ -223,32 +224,21 @@ if __name__ == "__main__":
         # for m in [LogisticModel('tfidf'), NN20DModel('tfidf'), NN20NDModel('tfidf'), NN1000DModel('tfidf'), NN1000NDModel('tfidf'), SVMModel('tfidf'), MNNBModel('tfidf'), KNNModel('tfidf'), LDAModel('tfidf'), RFCVModel('tfidf'), BoostModel('tfidf')]:  
         save_dir = "models/" + m.getSaveDirectory()
         for subdir in ["", "models/", "Training/", "Validation/", "Test/"]:
+            print(f"makedir", save_dir+subdir)
             os.makedirs(save_dir + subdir, exist_ok=True)
         # for i_split in [ '100', '103', '106', '109', '112', '114']:  '097',
         # for style, style_w_count in [('max_balanced_0', 'max_balanced_0')]: #
         # for style, style_w_count in [('max_balanced_0', 'max_balanced_0_1_1')]: #
         # for style, style_w_count in [('max_balanced_0', 'max_balanced_0_10_50')]: #
         # for style, style_w_count in [('bayram', 'bayram')]: #
-<<<<<<< HEAD
         for style, style_w_count in [('max_balanced_0', 'max_balanced_0_1_1')]: #
         # for style, style_w_count in [('3gram_max_balanced_0', '3gram_max_balanced_0')]: #
         # for style, style_w_count in [('max_balanced_0', 'max_balanced_0_3_7'), ('max_balanced_0', 'max_balanced_0_10_50')]: #
         # for style, style_w_count in [('bayram', 'bayram')]: #
         # for style in ['3gram_max_balanced_0', '2gram_max_balanced_0']: # '097',
             for chamber in ['House']:
-                # for congress in [97, 100, 103, 106, 109, 112, 114]:
-                for congress in [106]:
-                # for congress in range(80, 97):
-=======
-        # for style, style_w_count in [('2gram_max_balanced_0', '2gram_max_balanced_0_10_50')]: #
-        for style, style_w_count in [('3gram_max_balanced_0', '3gram_max_balanced_0_10_50')]: #
-            # for style, style_w_count in [('max_balanced_0', 'max_balanced_0_3_7'), ('max_balanced_0', 'max_balanced_0_10_50')]: #
-            # for style, style_w_count in [('bayram', 'bayram')]: #
-            # for style in ['3gram_max_balanced_0', '2gram_max_balanced_0']: # '097',
-            for chamber in ['House']:
                 for congress in [97, 100, 103, 106, 109, 112, 114]:
                 #for congress in range(43, 97):
->>>>>>> merge
                     fmt_congress = "%03d" % congress
                     np.random.seed(0)
                     tf.random.set_seed(0)

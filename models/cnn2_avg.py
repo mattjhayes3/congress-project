@@ -13,7 +13,7 @@ class CNN2AvgModel(SequenceModel):
         self.embedding_size = embedding_size
 
     def name(self):
-        return 'cnn2_avg_128_7_e128_s1_d3_50_e{self.embedding_size}' if not self.instance_name else f"cnn2_avg_128_7_e128_s1_d3_50_e{self.embedding_size}_{self.instance_name}"
+        return f'cnn2_avg_128_7_e128_s1_d3_50_e{self.embedding_size}' if not self.instance_name else f"cnn2_avg_128_7_e128_s1_d3_50_e{self.embedding_size}_{self.instance_name}"
 
     # inside, save the trained model to the corresponding folder - might be needed in the future
     def fit(self, training_matrix, training_labels, validation_matrix, validation_labels, dictionary):
