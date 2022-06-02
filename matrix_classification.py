@@ -201,7 +201,7 @@ if __name__ == "__main__":
     #for m in [ LogisticModel()]: # ,, NN20DModel(), NN20NDModel(), NN1000DModel(), NN1000NDModel(), MNNBModel(), KNNModel(), LDAModel(), RFCVModel(), BoostModel(), SVMModel()
     # for m in [ LSTMDropBiDiModel(256), LSTMDropBiDiModel(512), CNN2AvgModel(256), CNN2AvgModel(512), TransformerModel(256, 128), TransformerModel(512, 128), TransformerModel(128, 64), TransformerModel(128, 32), TransformerModel(128, 16)]: 
     ### for m in [LSTMDropModel(), LSTMDropBiDiModel(), LSTMBiDiModel(), NNMultiModel()]:
-    for m in [CNN2Avg(256), CNN2Avg(512), CNN2AvgDrop(256), CNN2AvgDrop(512)]: #LogisticModel()
+    for m in [CNN2AvgModel(256), CNN2AvgModel(512), CNN2AvgDropModel(256), CNN2AvgDropModel(512)]: #LogisticModel()
     # for m in [CNN2Model(), CNN2AvgModel(), LSTMDropBiDiModel(), TransformerModel(32), TransformerModel(64), TransformerMaxModel(), TransformerHDModel(128)]:
     #for m in [NN1000DModel(), NN1000NDModel(), NNMultiModel()]:
     # for m in [XGBoostModel(), LDAModel()]:
