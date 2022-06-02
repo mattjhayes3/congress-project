@@ -210,7 +210,7 @@ if __name__ == "__main__":
         # for style, style_w_count in [('max_balanced_0', 'max_balanced_0_3_7'), ('max_balanced_0', 'max_balanced_0_10_50')]: #
         # for style, style_w_count in [('bayram', 'bayram')]: #
         # for style in ['3gram_max_balanced_0', '2gram_max_balanced_0']: # '097',
-            for chamber in ['Senate']:
+            for chamber in ['House']:
                 for congress in [97, 100, 103, 106, 109, 112, 114]:
                 # for congress in [106]:
                 # for congress in range(91, 97):
