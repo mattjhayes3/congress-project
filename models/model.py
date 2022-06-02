@@ -66,3 +66,22 @@ class SequenceModel(Model):
 
 	def preprocess(self, matrix):
 		return matrix
+
+	def load_glove_embeddings(self, training_matrix):
+		embedding_index = loadEmbeddings(f"../glove.6B/glove.6B.{self.embedding_size}d.txt")
+        dictionary_size = np.max(training_matrix) + 2
+        print(f"dictionary_size =  {dictionary_size}")
+        embedding_matrix = np.zeros((dictionary_size, self.embedding_size))
+        hits = 0
+        misses = 0
+        for word, i in dictionary.items():
+            if word == '*':
+                word = '.'
+            vector = embedding_index.get(word)
+            if vector is None:
+                misses += 1
+            else:
+                hits += 1
+                embedding_matrix[i, :] = vector
+        print("Converted %d words (%d misses)" % (hits, misses))
+		return embedding_matrix, dictionary_size

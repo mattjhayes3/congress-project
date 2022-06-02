@@ -36,6 +36,7 @@ from models.transformer import TransformerModel
 from models.transformer_hd import TransformerHDModel
 from models.transformer_max import TransformerMaxModel
 from models.cnn2_avg import CNN2AvgModel
+from models.cnn2_avg_drop import CNN2AvgDropModel
 from models.logistic_sig import LogisticSigModel
 from models.transformer_nd import TransformerNDModel
 import models.common_fns as com
@@ -200,11 +201,7 @@ if __name__ == "__main__":
     #for m in [ LogisticModel()]: # ,, NN20DModel(), NN20NDModel(), NN1000DModel(), NN1000NDModel(), MNNBModel(), KNNModel(), LDAModel(), RFCVModel(), BoostModel(), SVMModel()
     # for m in [ LSTMDropBiDiModel(256), LSTMDropBiDiModel(512), CNN2AvgModel(256), CNN2AvgModel(512), TransformerModel(256, 128), TransformerModel(512, 128), TransformerModel(128, 64), TransformerModel(128, 32), TransformerModel(128, 16)]: 
     ### for m in [LSTMDropModel(), LSTMDropBiDiModel(), LSTMBiDiModel(), NNMultiModel()]:
-<<<<<<< Updated upstream
-    for m in [NNMultiModel()]: #LogisticModel()
-=======
-    for m in [NN1000DModel("glc")]:
->>>>>>> Stashed changes
+    for m in [CNN2Avg(256), CNN2Avg(512), CNN2AvgDrop(256), CNN2AvgDrop(512)]: #LogisticModel()
     # for m in [CNN2Model(), CNN2AvgModel(), LSTMDropBiDiModel(), TransformerModel(32), TransformerModel(64), TransformerMaxModel(), TransformerHDModel(128)]:
     #for m in [NN1000DModel(), NN1000NDModel(), NNMultiModel()]:
     # for m in [XGBoostModel(), LDAModel()]:
@@ -222,7 +219,9 @@ if __name__ == "__main__":
         # for style, style_w_count in [('max_balanced_0', 'max_balanced_0_1_1')]: #
         # for style, style_w_count in [('max_balanced_0', 'max_balanced_0_10_50')]: #
         # for style, style_w_count in [('bayram', 'bayram')]: #
-        for style, style_w_count in [('max_balanced_0', 'max_balanced_0_10_50')]: #
+        for style, style_w_count in [('max_balanced_0', 'max_balanced_0_1_1')]: #
+        # for style, style_w_count in [('3gram_max_balanced_0', '3gram_max_balanced_0')]: #
+        # for style, style_w_count in [('max_balanced_0', 'max_balanced_0_3_7'), ('max_balanced_0', 'max_balanced_0_10_50')]: #
         # for style, style_w_count in [('bayram', 'bayram')]: #
         # for style in ['3gram_max_balanced_0', '2gram_max_balanced_0']: # '097',
             for chamber in ['House']:
