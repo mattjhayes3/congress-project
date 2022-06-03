@@ -33,6 +33,7 @@ from models.rf_cv import RFCVModel
 from models.lstm import LSTMModel
 from models.nn_multi import NNMultiModel
 from models.transformer import TransformerModel
+from models.transformer2 import Transformer2Model
 from models.transformer_hd import TransformerHDModel
 from models.transformer_max import TransformerMaxModel
 from models.cnn2_avg import CNN2AvgModel
@@ -149,11 +150,11 @@ def run(save_dir, m, style, style_w_count, congress, chamber):
 
     os.makedirs(save_dir + 'models/', exist_ok=True)
     print(f"fitting...")
-    grid = m.getClassifierParams(training_matrix, training_labels, validation_matrix, validation_labels, dictionary)
-    if grid is not None:
-       df = pd.DataFrame.from_dict(grid.cv_results_)
-       df.sort_values('rank_test_score')
-       df.to_csv(f'{save_dir}models/{chamber}{congress}_{style}_cv_results.csv')
+    # grid = m.getClassifierParams(training_matrix, training_labels, validation_matrix, validation_labels, dictionary)
+    # if grid is not None:
+    #    df = pd.DataFrame.from_dict(grid.cv_results_)
+    #    df.sort_values('rank_test_score')
+    #    df.to_csv(f'{save_dir}models/{chamber}{congress}_{style}_cv_results.csv')
     m.fit(training_matrix, training_labels,
           validation_matrix, validation_labels, dictionary)
     if not m.is_baseline():
@@ -194,24 +195,29 @@ def run(save_dir, m, style, style_w_count, congress, chamber):
 if __name__ == "__main__":
     np.random.seed(0)
     tf.random.set_seed(0)
-    models = [CNN2AvgDropModel(300, pretrained='glove840'), 
-            CNN2AvgModel(300, pretrained='glove840'),
-            CNN2AvgDropModel(300, pretrained='glove840', trainable=True), 
-            CNN2AvgModel(300, pretrained='glove840', trainable=True), 
-            TransformerModel(50, 128, pretrained='glove'), 
-            TransformerModel(100, 128, pretrained='glove'), 
-            TransformerModel(200, 128, pretrained='glove'), 
-            TransformerModel(300, 128, pretrained='glove'),
-            TransformerModel(300, 128, pretrained='glove840'),
-            TransformerModel(50, 128, pretrained='glove', trainable=True),
-            TransformerModel(100, 128, pretrained='glove', trainable=True), 
-            TransformerModel(200, 128, pretrained='glove', trainable=True), 
-            TransformerModel(300, 128, pretrained='glove', trainable=True),
-            TransformerModel(300, 128, pretrained='glove840', trainable=True), 
-            TransformerModel(50, 128), 
-            TransformerModel(100, 128), 
-            TransformerModel(200, 128), 
-            TransformerModel(300, 128)]
+    # models = [CNN2AvgDropModel(300, pretrained='glove840'), 
+    #         CNN2AvgModel(300, pretrained='glove840'),
+    #         CNN2AvgDropModel(300, pretrained='glove840', trainable=True), 
+    #         CNN2AvgModel(300, pretrained='glove840', trainable=True), 
+    #         TransformerModel(50, 128, pretrained='glove'), 
+    #         TransformerModel(100, 128, pretrained='glove'), 
+    #         TransformerModel(200, 128, pretrained='glove'), 
+    #         TransformerModel(300, 128, pretrained='glove'),
+    #         TransformerModel(300, 128, pretrained='glove840'),
+    #         TransformerModel(50, 128, pretrained='glove', trainable=True),
+    #         TransformerModel(100, 128, pretrained='glove', trainable=True), 
+    #         TransformerModel(200, 128, pretrained='glove', trainable=True), 
+    #         TransformerModel(300, 128, pretrained='glove', trainable=True),
+    #         TransformerModel(300, 128, pretrained='glove840', trainable=True), 
+    #         TransformerModel(50, 128), 
+    #         TransformerModel(100, 128), 
+    #         TransformerModel(200, 128), 
+    #         TransformerModel(300, 128)]
+    # models = [LDAModel(), SVMModel()]
+    # models = [RFCVModel(), KNNModel()]
+    # models = [LDAModel(), SVMModel()]
+    # models = [BoostModel('6-3'), XGBoostModel('6-3')]
+    models = [Transformer2Model(32, 128)]
     for m_num, m in enumerate(models): 
         print(f"### model number {m_num}/{len(models)} ###")
         #
@@ -223,8 +229,8 @@ if __name__ == "__main__":
             os.makedirs(save_dir + subdir, exist_ok=True)
         # for i_split in [ '100', '103', '106', '109', '112', '114']:  '097',
         # for style, style_w_count in [('max_balanced_0', 'max_balanced_0')]: #
+        # for style, style_w_count in [('bayram', 'bayram'), ('bayram', 'bayram_7_3'), ('bayram', 'bayram_1_1'), ('max_balanced_0', 'max_balanced_0'), ('3gram_max_balanced_0', '3gram_max_balanced_0'), ('2gram_max_balanced_0', '2gram_max_balanced_0')]: #
         for style, style_w_count in [('max_balanced_0', 'max_balanced_0_1_1')]: #
-        # for style, style_w_count in [('max_balanced_0', 'max_balanced_0_10_50')]: #
         # for style, style_w_count in [('bayram', 'bayram')]: #
             for chamber in ['House']: # , 'Senate'
                 for congress in [97, 100, 103, 106, 109, 112, 114]:

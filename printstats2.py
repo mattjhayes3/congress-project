@@ -221,6 +221,8 @@ if __name__ == "__main__":
     print(acc_model_by_dataset.to_latex(index=False, formatters = acc_formatters, caption="(Balanced) accuracy for preliminary bag-of-words models.  Maximal values for each dataset are bolded.  For models that have a corresponding baseline in Bayram et al, increased values are shown in green, decreased in red."))
 
     print(acc_model_by_dataset.to_csv("models/results/stats.csv", index=False))
+    print(pos_acc_model_by_dataset.to_csv("models/results/pos_stats.csv", index=False))
+    print(neg_acc_model_by_dataset.to_csv("models/results/neg_stats.csv", index=False))
 
     # print('positive accuracy')
     # # print(pos_acc_model_by_dataset)
