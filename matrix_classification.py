@@ -217,7 +217,7 @@ if __name__ == "__main__":
     # models = [RFCVModel(), KNNModel()]
     # models = [LDAModel(), SVMModel()]
     # models = [BoostModel('6-3'), XGBoostModel('6-3')]
-    models = [Transformer2Model(32, 128)]
+    models = [Transformer2Model(32, 128), Transformer2Model(64, 128)]
     for m_num, m in enumerate(models): 
         print(f"### model number {m_num}/{len(models)} ###")
         #
