@@ -1,0 +1,1 @@
+{"model": "lda_6-3", "dataset": "h114_bayram_3_7", "congress": "114", "chamber": "House", "style": "bayram_3_7", "split": "valid", "n": 1000, "TP": 332, "FP": 168, "TN": 332, "FN": 168, "precision": 0.664, "recall": 0.664, "accuracy": 0.664, "f1": 0.664, "negative_accuracy": 0.664, "balanced_accuracy": 0.664, "AUC": 0.664, "CI_95.0": [0.6346953526989486, 0.6933046473010515]}

@@ -25,6 +25,8 @@ if __name__ == "__main__":
         stat['source'] = file
         stat['model'] = stat['model'].replace('models.', '') + "_"+ fname
         stat['model'] = stat['model'].replace('models', 'm_').replace('results', 'r_')
+        if 'chamber' in stat and stat['chamber']=="Senate" and stat['dataset'][0]=='h':
+            stat['dataset'] = 's' + stat['dataset'][1:]
         if not "congress" in stat or len(stat['congress'])==3:
             dset_suffix = stat['dataset'][4:]
             stat['dataset'] = stat['dataset'][:4]

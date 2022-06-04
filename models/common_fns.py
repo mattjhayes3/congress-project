@@ -283,8 +283,12 @@ def saveSplitStats(save_dir, model_name, congress, chamber, style, split, predic
             predicted_probs = predicted_probs[:, 1] # take the second columns only
         else:
             predicted_probs = predicted_probs[:, 0]
-
-    result = {'model': model_name, 'dataset':f'h{congress}_{style}', 'congress': congress, 'chamber':chamber, 'style':style, 'split': split}
+    chamber_short = "?"
+    if chamber=="House":
+        chamber_short = "h"
+    elif chamber=="Senate":
+        chamber_short = "s"
+    result = {'model': model_name, 'dataset':f'{chamber_short}{congress}_{style}', 'congress': congress, 'chamber':chamber, 'style':style, 'split': split}
 
     positive_indices = true_labels == 1
     negative_indices = ~positive_indices
