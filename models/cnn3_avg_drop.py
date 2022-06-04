@@ -8,7 +8,7 @@ import os
 import shutil
 
 class CNN3AvgDropModel(SequenceModel):
-    def __init__(self, embedding_size, drate, lsize, pretrained=None, trainable=False, instance_name=None):
+    def __init__(self, embedding_size, lsize, drate, pretrained=None, trainable=False, instance_name=None):
         super().__init__(embedding_size, pretrained, trainable, instance_name)
         self.drate = drate
         self.lsize = lsize
