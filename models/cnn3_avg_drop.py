@@ -17,7 +17,7 @@ class CNN3AvgDropModel(SequenceModel):
         trainable_part = 'trainable' if self.trainable else "not_trainable"
         glove_part = "" if not self.pretrained else f"_{self.pretrained}_{trainable_part}"
         dint = int(self.drate * 100)
-        return f'cnn3_avg_drop_128_7_l{self.lsize}_s1_d4_{dint}_e{self.embedding_size}{glove_part}' if not self.instance_name else f"cnn3_avg_drop_128_7_l{self.lsize}_s1_d4_{dint}_e{self.embedding_size}{glove_part}_{self.instance_name}"
+        return f'cnn3_a10-4_avg_drop_128_7_l{self.lsize}_s1_d4_{dint}_e{self.embedding_size}{glove_part}' if not self.instance_name else f"cnn3_a10-4_avg_drop_128_7_l{self.lsize}_s1_d4_{dint}_e{self.embedding_size}{glove_part}_{self.instance_name}"
 
     # inside, save the trained model to the corresponding folder - might be needed in the future
     def fit(self, training_matrix, training_labels, validation_matrix, validation_labels, dictionary):
@@ -48,7 +48,7 @@ class CNN3AvgDropModel(SequenceModel):
                                             keras.layers.Dense(1, activation='sigmoid'),
                                             ])
 
-        self.model.compile(optimizer='adam', loss='binary_crossentropy',
+        self.model.compile(optimizer=keras.optimizers.Adam(0.0001), loss='binary_crossentropy',
                         metrics=['binary_crossentropy', 'accuracy'])
         logdir = f"./logs/{self.name()}"
         shutil.rmtree(logdir, ignore_errors=True)
