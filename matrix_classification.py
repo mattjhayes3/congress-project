@@ -33,7 +33,6 @@ from models.rf_cv import RFCVModel
 from models.lstm import LSTMModel
 from models.nn_multi import NNMultiModel
 from models.transformer import TransformerModel
-from models.transformer2 import Transformer2Model
 from models.transformer_hd import TransformerHDModel
 from models.transformer_max import TransformerMaxModel
 from models.cnn2_avg import CNN2AvgModel
@@ -215,9 +214,8 @@ if __name__ == "__main__":
     #         TransformerModel(300, 128)]
     # models = [LDAModel(), SVMModel()]
     # models = [RFCVModel(), KNNModel()]
-    # models = [LDAModel(), SVMModel()]
+    models = [LDAModel('6-3'), SVMModel('6-3')]
     # models = [BoostModel('6-3'), XGBoostModel('6-3')]
-    models = [Transformer2Model(32, 128), Transformer2Model(64, 128)]
     for m_num, m in enumerate(models): 
         print(f"### model number {m_num}/{len(models)} ###")
         #
@@ -229,8 +227,8 @@ if __name__ == "__main__":
             os.makedirs(save_dir + subdir, exist_ok=True)
         # for i_split in [ '100', '103', '106', '109', '112', '114']:  '097',
         # for style, style_w_count in [('max_balanced_0', 'max_balanced_0')]: #
-        # for style, style_w_count in [('bayram', 'bayram'), ('bayram', 'bayram_3_7'), ('bayram', 'bayram_1_1'), ('max_balanced_0', 'max_balanced_0'), ('3gram_max_balanced_0', '3gram_max_balanced_0'), ('2gram_max_balanced_0', '2gram_max_balanced_0')]: #
-        for style, style_w_count in [('max_balanced_0', 'max_balanced_0_1_1')]: #
+        for style, style_w_count in [('bayram', 'bayram'), ('bayram', 'bayram_3_7'), ('bayram', 'bayram_1_1'), ('max_balanced_0', 'max_balanced_0'), ('3gram_max_balanced_0', '3gram_max_balanced_0'), ('2gram_max_balanced_0', '2gram_max_balanced_0')]: #
+        # for style, style_w_count in [('max_balanced_0', 'max_balanced_0_10_50')]: #
         # for style, style_w_count in [('bayram', 'bayram')]: #
             for chamber in ['House']: # , 'Senate'
                 for congress in [97, 100, 103, 106, 109, 112, 114]:
