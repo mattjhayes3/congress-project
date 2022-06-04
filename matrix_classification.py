@@ -218,10 +218,10 @@ if __name__ == "__main__":
     # models = [BoostModel('6-3'), XGBoostModel('6-3')]
     models = [CNN2AvgDropModel(300, pretrained='glove840'), 
         CNN2AvgDropModel(300, pretrained='glove840', trainable=True), 
-        CNN2AvgDropModel(300, pretrained='glove'), 
-        CNN2AvgDropModel(300, pretrained='glove', trainable=True),
-        CNN2AvgDropModel(200, pretrained='glove'), 
-        CNN2AvgDropModel(200, pretrained='glove', trainable=True),
+        #CNN2AvgDropModel(300, pretrained='glove'), 
+        #CNN2AvgDropModel(300, pretrained='glove', trainable=True),
+        #CNN2AvgDropModel(200, pretrained='glove'), 
+        #CNN2AvgDropModel(200, pretrained='glove', trainable=True),
         ]
     for m_num, m in enumerate(models): 
         print(f"### model number {m_num}/{len(models)} ###")
@@ -238,7 +238,7 @@ if __name__ == "__main__":
         # for style, style_w_count in [('max_balanced_0', 'max_balanced_0_10_50')]: #
         # for style, style_w_count in [('bayram', 'bayram')]: #
             for chamber in ['House']: # , 'Senate'
-                for congress in [97, 100, 103, 106, 109, 112, 114]:
+                for congress in [103, 106, 109, 112, 114]:
                     fmt_congress = "%03d" % congress
                     np.random.seed(0)
                     tf.random.set_seed(0)
