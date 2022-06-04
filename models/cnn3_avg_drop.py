@@ -7,8 +7,8 @@ import tensorflow as tf
 import os
 import shutil
 
-class CNN2AvgDropModel(SequenceModel):
-    def __init__(self, embedding_size, drate, pretrained=None, trainable=False, instance_name=None):
+class CNN3AvgDropModel(SequenceModel):
+    def __init__(self, embedding_size, drate, lsize, pretrained=None, trainable=False, instance_name=None):
         super().__init__(embedding_size, pretrained, trainable, instance_name)
         self.drate = drate
         self.lsize = lsize
@@ -17,7 +17,7 @@ class CNN2AvgDropModel(SequenceModel):
         trainable_part = 'trainable' if self.trainable else "not_trainable"
         glove_part = "" if not self.pretrained else f"_{self.pretrained}_{trainable_part}"
         dint = int(self.drate * 100)
-        return f'cnn2_avg_drop_128_7_l{self.lsize}_s1_d3_{dint}_e{self.embedding_size}{glove_part}' if not self.instance_name else f"cnn2_avg_drop_128_7_l{self.lsize}_s1_d3_{dint}_e{self.embedding_size}{glove_part}_{self.instance_name}"
+        return f'cnn3_avg_drop_128_7_l{self.lsize}_s1_d4_{dint}_e{self.embedding_size}{glove_part}' if not self.instance_name else f"cnn3_avg_drop_128_7_l{self.lsize}_s1_d4_{dint}_e{self.embedding_size}{glove_part}_{self.instance_name}"
 
     # inside, save the trained model to the corresponding folder - might be needed in the future
     def fit(self, training_matrix, training_labels, validation_matrix, validation_labels, dictionary):
@@ -35,6 +35,8 @@ class CNN2AvgDropModel(SequenceModel):
         # define the early stopping criteria
         es = keras.callbacks.EarlyStopping(monitor='val_accuracy', min_delta=0, patience=5, verbose=0, mode='auto', restore_best_weights=True)
         self.model = keras.models.Sequential([embedding_layer,
+                                            layers.Conv1D(self.lsize, 7, padding="valid", activation="relu", strides=1),
+                                            layers.Dropout(self.drate),
                                             layers.Conv1D(self.lsize, 7, padding="valid", activation="relu", strides=1),
                                             layers.Dropout(self.drate),
                                             layers.Conv1D(self.lsize, 7, padding="valid", activation="relu", strides=1),
