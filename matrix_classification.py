@@ -214,8 +214,15 @@ if __name__ == "__main__":
     #         TransformerModel(300, 128)]
     # models = [LDAModel(), SVMModel()]
     # models = [RFCVModel(), KNNModel()]
-    models = [LDAModel('6-3'), SVMModel('6-3')]
+    # models = [LDAModel('6-3'), SVMModel('6-3')]
     # models = [BoostModel('6-3'), XGBoostModel('6-3')]
+    models = [CNN2AvgDropModel(300, pretrained='glove840'), 
+        CNN2AvgDropModel(300, pretrained='glove840', trainable=True), 
+        CNN2AvgDropModel(300, pretrained='glove'), 
+        CNN2AvgDropModel(300, pretrained='glove', trainable=True),
+        CNN2AvgDropModel(200, pretrained='glove'), 
+        CNN2AvgDropModel(200, pretrained='glove', trainable=True),
+        ]
     for m_num, m in enumerate(models): 
         print(f"### model number {m_num}/{len(models)} ###")
         #
@@ -226,8 +233,8 @@ if __name__ == "__main__":
             print(f"makedir", save_dir+subdir)
             os.makedirs(save_dir + subdir, exist_ok=True)
         # for i_split in [ '100', '103', '106', '109', '112', '114']:  '097',
-        # for style, style_w_count in [('max_balanced_0', 'max_balanced_0')]: #
-        for style, style_w_count in [('bayram', 'bayram'), ('bayram', 'bayram_3_7'), ('bayram', 'bayram_1_1'), ('max_balanced_0', 'max_balanced_0'), ('3gram_max_balanced_0', '3gram_max_balanced_0'), ('2gram_max_balanced_0', '2gram_max_balanced_0')]: #
+        for style, style_w_count in [('max_balanced_0', 'max_balanced_0_1_1')]: #
+        # for style, style_w_count in [('bayram', 'bayram'), ('bayram', 'bayram_3_7'), ('bayram', 'bayram_1_1'), ('max_balanced_0', 'max_balanced_0'), ('3gram_max_balanced_0', '3gram_max_balanced_0'), ('2gram_max_balanced_0', '2gram_max_balanced_0')]: #
         # for style, style_w_count in [('max_balanced_0', 'max_balanced_0_10_50')]: #
         # for style, style_w_count in [('bayram', 'bayram')]: #
             for chamber in ['House']: # , 'Senate'

@@ -12,7 +12,7 @@ class CNN2AvgDropModel(SequenceModel):
     def name(self):
         trainable_part = 'trainable' if self.trainable else "not_trainable"
         glove_part = "" if not self.pretrained else f"_{self.pretrained}_{trainable_part}"
-        return f'cnn2_avg_drop_128_7_l128_s1_d3_10_e{self.embedding_size}_glove_part' if not self.instance_name else f"cnn2_avg_drop_128_7_l128_s1_d3_10_e{self.embedding_size}_glove_part_{self.instance_name}"
+        return f'cnn2_avg_drop_128_7_l128_s1_d3_10_e{self.embedding_size}{glove_part}' if not self.instance_name else f"cnn2_avg_drop_128_7_l128_s1_d3_10_e{self.embedding_size}{glove_part}_{self.instance_name}"
 
     # inside, save the trained model to the corresponding folder - might be needed in the future
     def fit(self, training_matrix, training_labels, validation_matrix, validation_labels, dictionary):
