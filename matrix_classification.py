@@ -150,11 +150,11 @@ def run(save_dir, m, style, style_w_count, congress, chamber):
 
     os.makedirs(save_dir + 'models/', exist_ok=True)
     print(f"fitting...")
-    # grid = m.getClassifierParams(training_matrix, training_labels, validation_matrix, validation_labels, dictionary)
-    # if grid is not None:
-    #    df = pd.DataFrame.from_dict(grid.cv_results_)
-    #    df.sort_values('rank_test_score')
-    #    df.to_csv(f'{save_dir}models/{chamber}{congress}_{style}_cv_results.csv')
+    grid = m.getClassifierParams(training_matrix, training_labels, validation_matrix, validation_labels, dictionary)
+    if grid is not None:
+       df = pd.DataFrame.from_dict(grid.cv_results_)
+       df.sort_values('rank_test_score')
+       df.to_csv(f'{save_dir}models/{chamber}{congress}_{style}_cv_results.csv')
     m.fit(training_matrix, training_labels,
           validation_matrix, validation_labels, dictionary)
     if not m.is_baseline():
@@ -213,39 +213,39 @@ if __name__ == "__main__":
     #         TransformerModel(100, 128), 
     #         TransformerModel(200, 128), 
     #         TransformerModel(300, 128)]
-    # models = [LDAModel(), SVMModel()]
+    models = [BoostModel('6-6'), XGBoostModel('6-6')] # , SVMModel()
     # models = [RFCVModel(), KNNModel()]
     # models = [LDAModel('6-3'), SVMModel('6-3')]
     # models = [BoostModel('6-3'), XGBoostModel('6-3')]
-    models = [CNN2AvgDropModel(300, 128, 0.1, pretrained='glove840', trainable=True),
-        CNN2AvgDropModel(300, 128, 0.05, pretrained='glove840', trainable=True), 
-        CNN2AvgDropModel(300, 128, 0.2, pretrained='glove840', trainable=True), 
-        CNN2AvgDropModel(300, 128, 0.3, pretrained='glove840', trainable=True), 
-        CNN3AvgDropModel(300, 128, 0.1, pretrained='glove840', trainable=True), 
-        CNN3AvgDropModel(300, 128, 0.05, pretrained='glove840', trainable=True), 
-        CNN3AvgDropModel(300, 128, 0.2, pretrained='glove840', trainable=True), 
-        CNN3AvgDropModel(300, 128, 0.3, pretrained='glove840', trainable=True), 
-        CNN2AvgDropModel(300, 64, 0.1, pretrained='glove840', trainable=True),
-        CNN2AvgDropModel(300, 64, 0.05, pretrained='glove840', trainable=True), 
-        CNN2AvgDropModel(300, 64, 0.2, pretrained='glove840', trainable=True), 
-        CNN2AvgDropModel(300, 64, 0.3, pretrained='glove840', trainable=True), 
-        CNN3AvgDropModel(300, 64, 0.1, pretrained='glove840', trainable=True), 
-        CNN3AvgDropModel(300, 64, 0.05, pretrained='glove840', trainable=True), 
-        CNN3AvgDropModel(300, 64, 0.2, pretrained='glove840', trainable=True), 
-        CNN3AvgDropModel(300, 64, 0.3, pretrained='glove840', trainable=True), 
-        CNN2AvgDropModel(300, 256, 0.1, pretrained='glove840', trainable=True),
-        CNN2AvgDropModel(300, 256, 0.05, pretrained='glove840', trainable=True), 
-        CNN2AvgDropModel(300, 256, 0.2, pretrained='glove840', trainable=True), 
-        CNN2AvgDropModel(300, 256, 0.3, pretrained='glove840', trainable=True), 
-        CNN3AvgDropModel(300, 256, 0.1, pretrained='glove840', trainable=True), 
-        CNN3AvgDropModel(300, 256, 0.05, pretrained='glove840', trainable=True), 
-        CNN3AvgDropModel(300, 256, 0.2, pretrained='glove840', trainable=True), 
-        CNN3AvgDropModel(300, 256, 0.3, pretrained='glove840', trainable=True), 
-        #CNN2AvgDropModel(300, pretrained='glove'), 
-        #CNN2AvgDropModel(300, pretrained='glove', trainable=True),
-        #CNN2AvgDropModel(200, pretrained='glove'), 
-        #CNN2AvgDropModel(200, pretrained='glove', trainable=True),
-        ]
+    # models = [CNN2AvgDropModel(300, 128, 0.1, pretrained='glove840', trainable=True),
+    #     CNN2AvgDropModel(300, 128, 0.05, pretrained='glove840', trainable=True), 
+    #     CNN2AvgDropModel(300, 128, 0.2, pretrained='glove840', trainable=True), 
+    #     CNN2AvgDropModel(300, 128, 0.3, pretrained='glove840', trainable=True), 
+    #     CNN3AvgDropModel(300, 128, 0.1, pretrained='glove840', trainable=True), 
+    #     CNN3AvgDropModel(300, 128, 0.05, pretrained='glove840', trainable=True), 
+    #     CNN3AvgDropModel(300, 128, 0.2, pretrained='glove840', trainable=True), 
+    #     CNN3AvgDropModel(300, 128, 0.3, pretrained='glove840', trainable=True), 
+    #     CNN2AvgDropModel(300, 64, 0.1, pretrained='glove840', trainable=True),
+    #     CNN2AvgDropModel(300, 64, 0.05, pretrained='glove840', trainable=True), 
+    #     CNN2AvgDropModel(300, 64, 0.2, pretrained='glove840', trainable=True), 
+    #     CNN2AvgDropModel(300, 64, 0.3, pretrained='glove840', trainable=True), 
+    #     CNN3AvgDropModel(300, 64, 0.1, pretrained='glove840', trainable=True), 
+    #     CNN3AvgDropModel(300, 64, 0.05, pretrained='glove840', trainable=True), 
+    #     CNN3AvgDropModel(300, 64, 0.2, pretrained='glove840', trainable=True), 
+    #     CNN3AvgDropModel(300, 64, 0.3, pretrained='glove840', trainable=True), 
+    #     CNN2AvgDropModel(300, 256, 0.1, pretrained='glove840', trainable=True),
+    #     CNN2AvgDropModel(300, 256, 0.05, pretrained='glove840', trainable=True), 
+    #     CNN2AvgDropModel(300, 256, 0.2, pretrained='glove840', trainable=True), 
+    #     CNN2AvgDropModel(300, 256, 0.3, pretrained='glove840', trainable=True), 
+    #     CNN3AvgDropModel(300, 256, 0.1, pretrained='glove840', trainable=True), 
+    #     CNN3AvgDropModel(300, 256, 0.05, pretrained='glove840', trainable=True), 
+    #     CNN3AvgDropModel(300, 256, 0.2, pretrained='glove840', trainable=True), 
+    #     CNN3AvgDropModel(300, 256, 0.3, pretrained='glove840', trainable=True), 
+    #     #CNN2AvgDropModel(300, pretrained='glove'), 
+    #     #CNN2AvgDropModel(300, pretrained='glove', trainable=True),
+    #     #CNN2AvgDropModel(200, pretrained='glove'), 
+    #     #CNN2AvgDropModel(200, pretrained='glove', trainable=True),
+    #     ]
     for m_num, m in enumerate(models): 
         print(f"### model number {m_num}/{len(models)} ###")
         #
@@ -256,8 +256,8 @@ if __name__ == "__main__":
             print(f"makedir", save_dir+subdir)
             os.makedirs(save_dir + subdir, exist_ok=True)
         # for i_split in [ '100', '103', '106', '109', '112', '114']:  '097',
-        for style, style_w_count in [('max_balanced_0', 'max_balanced_0_1_1')]: #
-        # for style, style_w_count in [('bayram', 'bayram'), ('bayram', 'bayram_3_7'), ('bayram', 'bayram_1_1'), ('max_balanced_0', 'max_balanced_0'), ('3gram_max_balanced_0', '3gram_max_balanced_0'), ('2gram_max_balanced_0', '2gram_max_balanced_0')]: #
+        # for style, style_w_count in [('max_balanced_0', 'max_balanced_0_1_1')]: #
+        for style, style_w_count in [('bayram', 'bayram'), ('bayram', 'bayram_3_7'), ('bayram', 'bayram_1_1')]: #
         # for style, style_w_count in [('max_balanced_0', 'max_balanced_0_10_50')]: #
         # for style, style_w_count in [('bayram', 'bayram')]: #
             for chamber in ['House']: # , 'Senate'

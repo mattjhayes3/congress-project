@@ -40,15 +40,15 @@ if __name__ == "__main__":
         print('Processing congress %s' % fmt_congress)
 
         # read the features corresponding to the columns in these feature matrices
-        with open(f"matricies/dicts/House_{fmt_congress}_max_balanced_0_10_50.json", "r") as j:
+        with open(f"matricies/dicts/House_{fmt_congress}_2gram_max_balanced_0_10_50.json", "r") as j:
             dictionary = json.load(j)
         rev_dict = {v: k for k, v in dictionary.items()}
 
         # read the previously trained and pickled classifier
-        trained = readTheClassifier(read_dir, fmt_congress, "3gram_max_balanced_0")
+        trained = readTheClassifier(read_dir, fmt_congress, "2gram_max_balanced_0")
 
         # read the feature importances from the trained model, and save them
         os.makedirs(f"{read_dir}models/features/", exist_ok=True)
-        savefile = f"{read_dir}models/features/House_{fmt_congress}_3gram_max_balanced_0_10_50.txt"
+        savefile = f"{read_dir}models/features/House_{fmt_congress}_2gram_max_balanced_0_10_50.txt"
 
         com.saveFeatureImportances(savefile, trained, dictionary)

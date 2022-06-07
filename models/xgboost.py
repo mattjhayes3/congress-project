@@ -10,7 +10,7 @@ import xgboost as xgb
 class XGBoostModel(Model):
 
     def name(self):
-        return "xg_boost_fullgird" if not self.instance_name else f"xg_boost_{self.instance_name}"
+        return "xg_boost_fullgird" if not self.instance_name else f"xg_boost_fullgrid_{self.instance_name}"
 
     def getClassifierParams(self, training_matrix, training_labels, validation_matrix,  validation_labels, dictionary):
         training_matrix = training_matrix.toarray()
@@ -20,7 +20,7 @@ class XGBoostModel(Model):
 
         print('Merged matrix size ' + str(np.shape(merged_matrix)))
         print('Merged labels ' + str(len(merged_labels)))
-        param_grid = {'max_depth': [1, 2,3, 4, 6], 'n_estimators':[ 50, 100, 200]} # 10, , 200
+        param_grid = {'max_depth': [3, 4, 6], 'n_estimators':[ 50, 100, 200]} # 10, , 200
  
         self.grid = GridSearchCV(xgb.XGBClassifier(n_jobs=2), param_grid=param_grid, scoring= 'accuracy', cv=4, verbose = 2, n_jobs = -1) # factor=2
         self.grid.fit(training_matrix, training_labels)

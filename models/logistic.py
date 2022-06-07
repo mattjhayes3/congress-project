@@ -22,7 +22,7 @@ class LogisticModel(Model):
 
         num_features = np.shape(training_matrix)[1]
 
-        es = keras.callbacks.EarlyStopping(monitor='val_accuracy', min_delta=0, patience=35, verbose=0, mode='auto', restore_best_weights=True)
+        es = keras.callbacks.EarlyStopping(monitor='val_accuracy', min_delta=0, patience=15, verbose=0, mode='auto', restore_best_weights=True)
         self.model = keras.models.Sequential([ # feed forward NN with a single hidden layer
                                         #keras.layers.Dense(20, input_dim=num_features, activation='tanh'),
                                         #keras.layers.Dense(1000, input_dim=num_features, activation='tanh'),
