@@ -48,7 +48,7 @@ class CNN3AvgDropModel(SequenceModel):
                                             keras.layers.Dense(1, activation='sigmoid'),
                                             ])
 
-        self.model.compile(optimizer=keras.optimizers.Adam(0.0001), loss='binary_crossentropy',
+        self.model.compile(optimizer=tf.keras.optimizers.Adam(0.0001), loss='binary_crossentropy',
                         metrics=['binary_crossentropy', 'accuracy'])
         logdir = f"./logs/{self.name()}"
         shutil.rmtree(logdir, ignore_errors=True)
